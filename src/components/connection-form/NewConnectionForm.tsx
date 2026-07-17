@@ -82,6 +82,7 @@ export default function NewConnectionForm({
             }
 
             if ('carImage' in values) {
+                // @ts-expect-error
                 delete values.carImage;
             }
 
