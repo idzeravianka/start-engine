@@ -1,0 +1,56 @@
+'use client';
+
+import { Box, Typography, Paper, Chip } from '@mui/material';
+import CarImage from "@/src/components/CarImage";
+import {MqttSettings} from "@/src/types/interfaces/mqtt-settings";
+
+export default function SelectedCarInfo({ car, isConnected }: { car: MqttSettings, isConnected: boolean }) {
+    return (
+        <Box sx={{ py: 1, bgcolor: 'plat.bg' }}>
+            <Typography variant="overline" sx={{ color: 'plat.textMuted', fontWeight: 700, display: 'block', fontSize: '12px', lineHeight: 1.5  }}>
+                Мой автомобиль
+            </Typography>
+            <Typography sx={{ color: 'plat.textDark', fontSize: '12px', mb: 1 }}>
+                {car?.name || 'N/A'} | {car?.server}
+            </Typography>
+            <Paper
+                elevation={0}
+                sx={{
+                    p: 1,
+                    borderRadius: '24px',
+                    bgcolor: 'white',
+                    textAlign: 'center'
+                }}
+            >
+                <Box sx={{
+                    width: '100%',
+                    aspectRatio: '8/4'
+                }}>
+                    <CarImage carId={car?.id} />
+                </Box>
+
+            <Chip
+                label={
+                    <Box sx={{ display: 'flex', gap: 0.5 }}>
+                        <Typography sx={{ fontSize: '12px', color: 'plat.textMuted' }}>
+                            Связь:
+                        </Typography>
+                        <Typography
+                            sx={{
+                                fontSize: '12px',
+                                color: isConnected ? 'plat.textSuccess' : 'plat.textWarning',
+                            }}
+                        >
+                            {isConnected ? "Онлайн" : "Оффлайн"}
+                        </Typography>
+                    </Box>
+                }
+                sx={{
+                    bgcolor: 'transparent',
+                    '& .MuiChip-label': { p: 0 }
+                }}
+            />
+            </Paper>
+        </Box>
+    );
+}

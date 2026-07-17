@@ -1,0 +1,16 @@
+export enum DashboardItemNames {
+  Voltage = 'voltage',
+  K1 = 'k1',
+  K2 = 'k2',
+  K4 = 'k4',
+  K5 = 'k5',
+  IN1 = 'in1',
+  IN2 = 'in2',
+  Temp1 = 'temp1',
+  Temp2 = 'temp2',
+  Temp3 = 'temp3',
+  Timer = 'timer',
+  Count = 'count',
+  CentralLock = 'centralLock',
+  WebastoButtons = 'webastoButtons',
+}
