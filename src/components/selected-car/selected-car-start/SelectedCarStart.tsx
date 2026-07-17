@@ -10,15 +10,17 @@ import KeyIcon from '@mui/icons-material/Key';
 import {MqttSensorsDataResponse} from "@/src/types/interfaces/mqtt-sensors-data-response";
 import {PinStatuses} from "@/src/types/enums/pin-statuses";
 import {TemperatureStatuses} from "@/src/types/enums/temperature-statuses";
+import {useHaptic} from "@mxerf/tappt/react";
 
 export default function RemoteStart({ sensorsData }: {sensorsData: MqttSensorsDataResponse | null}) {
     const [holdTimeout, setHoldTimeout] = useState<ReturnType<typeof setTimeout> | undefined>(undefined);
+    const haptic = useHaptic();
 
     const startPress = () => {
         const holdTime = 1500;
-        if (navigator.vibrate) navigator.vibrate(50);
+        haptic.impact('light');
         setHoldTimeout(setTimeout(() => {
-            if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+            haptic.impact('medium');
             clearTimeout(holdTimeout);
             setHoldTimeout(undefined);
         }, holdTime));
