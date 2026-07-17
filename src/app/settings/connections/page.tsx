@@ -19,8 +19,8 @@ export default function Connections() {
         setCars(() => data);
     }, []);
 
-    const handleEditCar = (id: string) => router.push(`/settings/connections/${id}`);
-    const handleAddNewCar = () => router.push(`/settings/connections/new`);
+    const handleEditCar = (id: string) => router.push(`/settings/connections/setup-connection?id=${id}`);
+    const handleAddNewCar = () => router.push(`/settings/connections/setup-connection?id=new`);
 
     const handleRemoveCarRequest = (id: string) => {
         setCarToDelete(id);

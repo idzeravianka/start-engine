@@ -1,17 +1,17 @@
 'use client';
-import {useParams, useRouter} from "next/navigation";
-import {getAllSettings, setSettings} from "@/src/utils/user-settings-store";
+import {useRouter, useSearchParams} from "next/navigation";
 import React, {useEffect, useState} from "react";
-import NewConnectionForm from "@/src/components/connection-form/NewConnectionForm";
+import {MqttSettings} from "@/src/types/interfaces/mqtt-settings";
+import {getAllSettings, setSettings} from "@/src/utils/user-settings-store";
 import {ConnectionFormDT} from "@/src/components/connection-form/connection-form.interface";
 import PageContainer from "@/src/components/PageContainer";
 import {Box} from "@mui/material";
-import {MqttSettings} from "@/src/types/interfaces/mqtt-settings";
+import NewConnectionForm from "@/src/components/connection-form/NewConnectionForm";
 
 export default function EditConnection() {
-    const params = useParams();
+    const searchParams = useSearchParams();
     const router = useRouter();
-    const id = params.id as string;
+    const id = searchParams.get('id');
 
     const [initialSettingsData, setInitialSettingsData] = useState<MqttSettings | undefined>(undefined);
 
@@ -33,12 +33,14 @@ export default function EditConnection() {
 
     const updateExisting = (val: ConnectionFormDT) => {
         const allSettings = getAllSettings()!;
-        const updatedSettings = { ...allSettings, savedEntities: allSettings?.savedEntities.map(entity => {
+        const updatedSettings = {
+            ...allSettings, savedEntities: allSettings?.savedEntities.map(entity => {
                 if (entity.id === val.id) {
                     return {...entity, ...val};
                 }
                 return entity;
-            }) };
+            })
+        };
         setSettings(updatedSettings);
         navigateToCarList();
     }
@@ -50,7 +52,8 @@ export default function EditConnection() {
     return (
         <PageContainer>
             <Box sx={{backgroundColor: 'plat.bg', textAlign: 'center', p: 2}}>Настройки устройства</Box>
-            <NewConnectionForm initialData={initialSettingsData} onSave={save} onUpdate={updateExisting}></NewConnectionForm>
+            <NewConnectionForm initialData={initialSettingsData} onSave={save}
+                               onUpdate={updateExisting}></NewConnectionForm>
         </PageContainer>
     )
 }
