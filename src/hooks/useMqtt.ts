@@ -14,7 +14,7 @@ export const useMqtt = (onMessageCallback?: (sensorsData: MqttSensorsDataRespons
 
         const onConnect = () => setIsConnected(true);
         const onOffline = () => setIsConnected(false);
-        const onMessage = (_, message: Buffer) => {
+        const onMessage = (_: string, message: Buffer) => {
             if (onMessageCallback) onMessageCallback(JSON.parse(message.toString()) as MqttSensorsDataResponse)
         };
 
