@@ -13,7 +13,7 @@ import {MqttSensorsDataResponse} from "@/src/types/interfaces/mqtt-sensors-data-
 
 export default function Home() {
     const [isReady, setIsReady] = useState(false);
-    const [sensorsData, setSensorsData] = useState<MqttSensorsDataResponse>(null);
+    const [sensorsData, setSensorsData] = useState<MqttSensorsDataResponse | null>(null);
     useEffect(() => {
         setIsReady(true);
     }, []);

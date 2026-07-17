@@ -11,7 +11,7 @@ import {MqttSensorsDataResponse} from "@/src/types/interfaces/mqtt-sensors-data-
 import {PinStatuses} from "@/src/types/enums/pin-statuses";
 import {TemperatureStatuses} from "@/src/types/enums/temperature-statuses";
 
-export default function RemoteStart({ sensorsData }: {sensorsData: MqttSensorsDataResponse}) {
+export default function RemoteStart({ sensorsData }: {sensorsData: MqttSensorsDataResponse | null}) {
     const [holdTimeout, setHoldTimeout] = useState<ReturnType<typeof setTimeout> | undefined>(undefined);
 
     const startPress = () => {
