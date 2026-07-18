@@ -5,7 +5,7 @@ import {MqttSensorsDataResponse} from "@/src/types/interfaces/mqtt-sensors-data-
 import {MqttSettings} from "@/src/types/interfaces/mqtt-settings";
 import {MqttClient} from "mqtt";
 
-export const useMqtt = (onMessageCallback?: (sensorsData: MqttSensorsDataResponse) => void) => {
+export const useMqtt = (onMessageCallback: (sensorsData: MqttSensorsDataResponse) => void) => {
     const [client, setClient] = useState<MqttClient | null>(null);
     const [isConnected, setIsConnected] = useState(false);
 
@@ -15,7 +15,7 @@ export const useMqtt = (onMessageCallback?: (sensorsData: MqttSensorsDataRespons
         const onConnect = () => setIsConnected(true);
         const onOffline = () => setIsConnected(false);
         const onMessage = (_: string, message: Buffer) => {
-            if (onMessageCallback) onMessageCallback(JSON.parse(message.toString()) as MqttSensorsDataResponse)
+            onMessageCallback(JSON.parse(message.toString()) as MqttSensorsDataResponse);
         };
 
         client.on('connect', onConnect);

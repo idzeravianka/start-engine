@@ -8,18 +8,14 @@ import {Box, Typography} from "@mui/material";
 import {useMqtt} from "@/src/hooks/useMqtt";
 import {sendCommand} from "@/src/utils/mqtt-client";
 import {MqttCommands} from "@/src/types/enums/mqtt-commands";
-import {MqttSensorsDataResponse} from "@/src/types/interfaces/mqtt-sensors-data-response";
 
 export default function Home() {
-    const [sensorsData, setSensorsData] = useState<MqttSensorsDataResponse | null>(null);
     const hasHydrated = useSettingsStore((state) => state.hasHydrated);
     const activeCar = useSettingsStore((state) => state.getActiveCar());
+    const mqttData = useSettingsStore((state) => state.mqttData);
+    const setMqttData = useSettingsStore((state) => state.setMqttData);
 
-    const handleEngineUpdate = useCallback((data: MqttSensorsDataResponse) => {
-        setSensorsData(data);
-    }, []);
-
-    const {reconnect, client, isConnected, subscribe} = useMqtt(handleEngineUpdate);
+    const {reconnect, client, isConnected, subscribe} = useMqtt(setMqttData);
 
     useEffect(() => {
         if (activeCar) {
@@ -50,7 +46,7 @@ export default function Home() {
             {hasHydrated && activeCar && (
                 <>
                     <SelectedCarInfo car={activeCar} isConnected={isConnected}/>
-                    <RemoteStart sensorsData={sensorsData}/>
+                    <RemoteStart sensorsData={mqttData}/>
                 </>
             )}
         </PageContainer>

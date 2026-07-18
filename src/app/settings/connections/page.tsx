@@ -6,13 +6,16 @@ import CarList from "@/src/components/car-list/CarList";
 import {useRouter} from "next/navigation";
 import {useSettingsStore} from "@/src/utils/user-settings-store";
 import {ConfirmDialog} from "@/src/components/confirm-dialog/ConfirmDialog";
+import {MqttSettings} from "@/src/types/interfaces/mqtt-settings";
+
+const EMPTY_ARRAY: MqttSettings[] = [];
 
 export default function Connections() {
     const router = useRouter();
 
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [carToDelete, setCarToDelete] = useState<string | null>(null);
-    const cars = useSettingsStore(state => state.settings?.savedEntities ?? []);
+    const cars = useSettingsStore(state => state.settings?.savedEntities ?? EMPTY_ARRAY);
     const removeCarById = useSettingsStore(state => state.removeCarById);
 
     const handleEditCar = (id: string) => router.push(`/settings/connections/setup-connection?id=${id}`);

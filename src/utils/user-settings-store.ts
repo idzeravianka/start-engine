@@ -3,6 +3,7 @@ import {MqttSettings, UserSettings} from "@/src/types/interfaces/mqtt-settings";
 import localforage from "localforage";
 import {createJSONStorage, persist} from "zustand/middleware";
 import {create} from 'zustand';
+import {initialMqttSensorsData, MqttSensorsDataResponse} from "@/src/types/interfaces/mqtt-sensors-data-response";
 
 const SETTINGS_KEY = 'autorun_mqtt_settings';
 const CAR_ICON_STORAGE_KEY = 'autorun_car_icon_storage';
@@ -15,11 +16,13 @@ localforage.config({
 interface SettingsState {
     settings: UserSettings | null;
     hasHydrated: boolean;
-    setHasHydrated: (state: boolean) => void;
+    mqttData: MqttSensorsDataResponse;
     setSettings: (settings: UserSettings) => void;
     removeCarById: (carId: string) => void;
     addOrUpdateConnection: (settings: MqttSettings) => void;
     getActiveCar: () => MqttSettings | null;
+    setHasHydrated: (state: boolean) => void;
+    setMqttData: (data: MqttSensorsDataResponse) => void;
 }
 
 // function updateDeprecatedSettings(deprecatedSettings: string): void {
@@ -53,9 +56,8 @@ export const useSettingsStore = create<SettingsState>()(
         (set, get) => ({
             settings: null,
             hasHydrated: false,
-            setHasHydrated: (state) => set({ hasHydrated: state }),
+            mqttData: initialMqttSensorsData,
             setSettings: (settings: UserSettings) => set({settings}),
-
             removeCarById: async (carId: string) => {
                 await carIconService.remove(carId);
 
@@ -77,7 +79,6 @@ export const useSettingsStore = create<SettingsState>()(
                     };
                 })
             },
-
             addOrUpdateConnection: (settings: MqttSettings) => set((state) => {
                 if (!state.settings) return state;
 
@@ -87,16 +88,18 @@ export const useSettingsStore = create<SettingsState>()(
                     ? { settings: { ...state.settings, savedEntities: state.settings.savedEntities.map(e => e.id === settings.id ? settings : e) } }
                     : { settings: { ...state.settings, savedEntities: [...state.settings.savedEntities, settings] } };
             }),
-
             getActiveCar: () => {
                 const {settings} = get();
                 if (!settings || !settings.selectedEntityId) return null;
                 return settings.savedEntities.find((e: MqttSettings) => e.id === settings.selectedEntityId) ?? null;
             },
+            setHasHydrated: (state) => set({ hasHydrated: state }),
+            setMqttData: (data) => set({ mqttData: data }),
         }),
         {
             name: SETTINGS_KEY,
             storage: createJSONStorage(() => localStorage),
+            partialize: (state) => ({ settings: state.settings }),
             onRehydrateStorage: () => (state) => {
                 state?.setHasHydrated(true);
             },
