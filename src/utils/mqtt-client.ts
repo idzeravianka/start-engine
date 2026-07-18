@@ -1,6 +1,5 @@
 'use client';
 import mqtt, { MqttClient, IClientOptions } from 'mqtt';
-import {getActiveCar, getAllSettings} from "@/src/utils/user-settings-store";
 import {MqttSettings} from "@/src/types/interfaces/mqtt-settings";
 
 const MQTT_DEFAULT_OPTIONS: IClientOptions = {

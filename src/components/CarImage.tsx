@@ -1,7 +1,7 @@
 "use client";
 
 import React, {useState, useEffect} from 'react';
-import {loadSavedImage} from "@/src/utils/user-settings-store";
+import {carIconService} from "@/src/utils/user-settings-store";
 
 export default function CarImage({ carId }: { carId: string }) {
     const [src, setSrc] = useState<string | null>(null);
@@ -10,14 +10,9 @@ export default function CarImage({ carId }: { carId: string }) {
         let isMounted = true;
 
         async function loadImage() {
-            try {
-                const imageUrl = await loadSavedImage(carId);
-
-                if (isMounted && imageUrl) {
-                    setSrc(imageUrl);
-                }
-            } catch (err) {
-                console.error('Ошибка загрузки картинки авто:', err);
+            const imageUrl = await carIconService.load(carId);
+            if (isMounted && imageUrl) {
+                setSrc(imageUrl);
             }
         }
 
@@ -25,8 +20,12 @@ export default function CarImage({ carId }: { carId: string }) {
 
         return () => {
             isMounted = false;
+            if (src) {
+                URL.revokeObjectURL(src);
+            }
         };
     }, [carId]);
+
     return (
         <img
             src={src ?? '/default-car.svg'}

@@ -11,7 +11,7 @@ import {
 import {ObjectSchema} from "yup";
 import {ConnectionFormDT, NewConnectionFormDT} from "@/src/components/connection-form/connection-form.interface";
 import {generateId} from "@/src/utils/generate-id";
-import {uploadCarIcon} from "@/src/utils/user-settings-store";
+import {carIconService} from "@/src/utils/user-settings-store";
 
 const FORM_FIELDS_CONFIG: Record<keyof NewConnectionFormDT, { label: string, placeholder: string }> = {
     name: {
@@ -43,7 +43,6 @@ const FORM_FIELDS_CONFIG: Record<keyof NewConnectionFormDT, { label: string, pla
 interface MqttSettingsFormProps {
     initialData?: ConnectionFormDT;
     onSave: (values: ConnectionFormDT) => void | Promise<void>;
-    onUpdate: (values: ConnectionFormDT) => void | Promise<void>;
 }
 
 const validationSchema: ObjectSchema<NewConnectionFormDT> = Yup.object({
@@ -60,7 +59,6 @@ const validationSchema: ObjectSchema<NewConnectionFormDT> = Yup.object({
 export default function NewConnectionForm({
                                               initialData,
                                               onSave,
-                                              onUpdate,
                                           }: MqttSettingsFormProps) {
 
     const formik = useFormik<NewConnectionFormDT & { carImage: File | null }>({
@@ -76,21 +74,14 @@ export default function NewConnectionForm({
         validationSchema: validationSchema,
         enableReinitialize: true,
         onSubmit: async (values) => {
-            const newGeneratedId = generateId();
-            if (values.carImage) {
-                await uploadCarIcon(values.carImage, initialData?.id ?? newGeneratedId)
+            const {carImage, ...formData} = values;
+            const id = generateId();
+
+            if (carImage) {
+                await carIconService.upload(id, carImage);
             }
 
-            if ('carImage' in values) {
-                // @ts-expect-error
-                delete values.carImage;
-            }
-
-            if (initialData?.id) {
-                onUpdate({...initialData, ...values});
-            } else {
-                onSave({id: newGeneratedId, ...values})
-            }
+            onSave({id, ...formData});
         },
     });
 
