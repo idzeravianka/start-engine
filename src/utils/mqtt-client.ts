@@ -2,6 +2,7 @@
 import mqtt, { MqttClient, IClientOptions } from 'mqtt';
 import {MqttSettings} from "@/src/types/interfaces/mqtt-settings";
 import {useSettingsStore} from "@/src/utils/user-settings-store";
+import {MqttSensorsDataResponse} from "@/src/types/interfaces/mqtt-sensors-data-response";
 
 const MQTT_DEFAULT_OPTIONS: IClientOptions = {
     encoding: 'utf8',
@@ -15,7 +16,7 @@ const MQTT_DEFAULT_OPTIONS: IClientOptions = {
 
 let client: MqttClient | null = null;
 
-export const getMqttClient = (activeCar: MqttSettings): MqttClient => {
+export const getMqttClient = (activeCar: MqttSettings, onMessageCallback: (sensorsData: MqttSensorsDataResponse) => void): MqttClient => {
     if (client && client.options.clientId !== `${activeCar.id}_${activeCar.name}`) {
         disconnectMqtt();
     }
@@ -27,18 +28,24 @@ export const getMqttClient = (activeCar: MqttSettings): MqttClient => {
             port: +activeCar.port,
             clientId: `${activeCar.id}_${activeCar.name}`,
         });
+
+        client.on('connect', () => {
+            useSettingsStore.getState().setMqttStatus('connected');
+            client!.subscribe(`${activeCar.topic}/pub`, {qos: 0});
+        });
+
+        client.on('offline', () => {
+            useSettingsStore.getState().setMqttStatus('disconnected');
+        });
+
+        client.on('reconnect', () => {
+            useSettingsStore.getState().setMqttStatus('connecting');
+        });
+        client.on('message', (_: string, message: Buffer) => {
+            onMessageCallback(JSON.parse(message.toString()) as MqttSensorsDataResponse);
+        });
     }
-    client.on('connect', () => {
-        useSettingsStore.getState().setMqttStatus('connected');
-    });
 
-    client.on('offline', () => {
-        useSettingsStore.getState().setMqttStatus('disconnected');
-    });
-
-    client.on('reconnect', () => {
-        useSettingsStore.getState().setMqttStatus('connecting');
-    });
     return client;
 };
 

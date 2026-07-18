@@ -22,6 +22,7 @@ interface SettingsState {
     removeCarById: (carId: string) => void;
     addOrUpdateConnection: (settings: MqttSettings) => void;
     getActiveCar: () => MqttSettings | null;
+    setActiveCarId: (carId: string) => void;
     setHasHydrated: (state: boolean) => void;
     setMqttData: (data: MqttSensorsDataResponse) => void;
     setMqttStatus: (status: 'connected' | 'disconnected' | 'connecting') => void;
@@ -95,6 +96,18 @@ export const useSettingsStore = create<SettingsState>()(
                 const {settings} = get();
                 if (!settings || !settings.selectedEntityId) return null;
                 return settings.savedEntities.find((e: MqttSettings) => e.id === settings.selectedEntityId) ?? null;
+            },
+            setActiveCarId: (carId) => {
+                set((state) => {
+                    if (!state.settings) return state;
+
+                    return {
+                        settings: {
+                            ...state.settings,
+                            selectedEntityId: carId
+                        }
+                    };
+                });
             },
             setHasHydrated: (state) => set({ hasHydrated: state }),
             setMqttData: (data) => set({ mqttData: data }),

@@ -7,6 +7,7 @@ import BottomAppNavigation from "@/src/components/BottomAppNavigation";
 import {AppRouterCacheProvider} from "@mui/material-nextjs/v16-appRouter";
 import {Box, ThemeProvider, useTheme} from "@mui/material";
 import {theme} from "@/src/styles/theme";
+import {MqttProvider} from "@/src/components/mqtt-provider/MqttProvider";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -41,7 +42,9 @@ export default function RootLayout({children}: Readonly<{ children: React.ReactN
                         overflowY: 'auto',
                         backgroundColor: 'plat.bg'
                     }}>
-                        {children}
+                        <MqttProvider>
+                            {children}
+                        </MqttProvider>
                     </Box>
 
                     <Box sx={{backgroundColor: 'plat.bg'}}>
