@@ -7,25 +7,17 @@ import {MqttClient} from "mqtt";
 
 export const useMqtt = (onMessageCallback: (sensorsData: MqttSensorsDataResponse) => void) => {
     const [client, setClient] = useState<MqttClient | null>(null);
-    const [isConnected, setIsConnected] = useState(false);
 
     useEffect(() => {
         if (!client) return;
 
-        const onConnect = () => setIsConnected(true);
-        const onOffline = () => setIsConnected(false);
         const onMessage = (_: string, message: Buffer) => {
             onMessageCallback(JSON.parse(message.toString()) as MqttSensorsDataResponse);
         };
 
-        client.on('connect', onConnect);
-        client.on('offline', onOffline);
         client.on('message', onMessage);
 
-        setIsConnected(() => client.connected);
         return () => {
-            client.off('connect', onConnect);
-            client.off('offline', onOffline);
             client.off('message', onMessage);
         };
     }, [client, onMessageCallback]);
@@ -42,5 +34,5 @@ export const useMqtt = (onMessageCallback: (sensorsData: MqttSensorsDataResponse
         setClient(() => newClient);
     }, []);
 
-    return {client, reconnect, isConnected, subscribe};
+    return {client, reconnect, subscribe};
 };

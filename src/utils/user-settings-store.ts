@@ -17,12 +17,14 @@ interface SettingsState {
     settings: UserSettings | null;
     hasHydrated: boolean;
     mqttData: MqttSensorsDataResponse;
+    mqttStatus: 'connected' | 'disconnected' | 'connecting';
     setSettings: (settings: UserSettings) => void;
     removeCarById: (carId: string) => void;
     addOrUpdateConnection: (settings: MqttSettings) => void;
     getActiveCar: () => MqttSettings | null;
     setHasHydrated: (state: boolean) => void;
     setMqttData: (data: MqttSensorsDataResponse) => void;
+    setMqttStatus: (status: 'connected' | 'disconnected' | 'connecting') => void;
 }
 
 // function updateDeprecatedSettings(deprecatedSettings: string): void {
@@ -57,6 +59,7 @@ export const useSettingsStore = create<SettingsState>()(
             settings: null,
             hasHydrated: false,
             mqttData: initialMqttSensorsData,
+            mqttStatus: 'disconnected',
             setSettings: (settings: UserSettings) => set({settings}),
             removeCarById: async (carId: string) => {
                 await carIconService.remove(carId);
@@ -95,6 +98,7 @@ export const useSettingsStore = create<SettingsState>()(
             },
             setHasHydrated: (state) => set({ hasHydrated: state }),
             setMqttData: (data) => set({ mqttData: data }),
+            setMqttStatus: (status) => set({ mqttStatus: status }),
         }),
         {
             name: SETTINGS_KEY,

@@ -1,6 +1,7 @@
 'use client';
 import mqtt, { MqttClient, IClientOptions } from 'mqtt';
 import {MqttSettings} from "@/src/types/interfaces/mqtt-settings";
+import {useSettingsStore} from "@/src/utils/user-settings-store";
 
 const MQTT_DEFAULT_OPTIONS: IClientOptions = {
     encoding: 'utf8',
@@ -27,6 +28,17 @@ export const getMqttClient = (activeCar: MqttSettings): MqttClient => {
             clientId: `${activeCar.id}_${activeCar.name}`,
         });
     }
+    client.on('connect', () => {
+        useSettingsStore.getState().setMqttStatus('connected');
+    });
+
+    client.on('offline', () => {
+        useSettingsStore.getState().setMqttStatus('disconnected');
+    });
+
+    client.on('reconnect', () => {
+        useSettingsStore.getState().setMqttStatus('connecting');
+    });
     return client;
 };
 

@@ -75,7 +75,7 @@ export default function NewConnectionForm({
         enableReinitialize: true,
         onSubmit: async (values) => {
             const {carImage, ...formData} = values;
-            const id = generateId();
+            const id = initialData?.id ?? generateId();
 
             if (carImage) {
                 await carIconService.upload(id, carImage);

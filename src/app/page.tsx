@@ -1,7 +1,7 @@
 'use client';
 import PageContainer from "@/src/components/PageContainer";
 import SelectedCarInfo from "@/src/components/selected-car/selected-car-info/SelectedCarInfo";
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {useSettingsStore} from "@/src/utils/user-settings-store";
 import RemoteStart from "@/src/components/selected-car/selected-car-start/SelectedCarStart";
 import {Box, Typography} from "@mui/material";
@@ -14,8 +14,9 @@ export default function Home() {
     const activeCar = useSettingsStore((state) => state.getActiveCar());
     const mqttData = useSettingsStore((state) => state.mqttData);
     const setMqttData = useSettingsStore((state) => state.setMqttData);
+    const isConnected = useSettingsStore(state => state.mqttStatus === 'connected');
 
-    const {reconnect, client, isConnected, subscribe} = useMqtt(setMqttData);
+    const {reconnect, client, subscribe} = useMqtt(setMqttData);
 
     useEffect(() => {
         if (activeCar) {
