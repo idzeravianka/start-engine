@@ -3,7 +3,10 @@ import {MqttSettings, UserSettings} from "@/src/types/interfaces/mqtt-settings";
 import localforage from "localforage";
 import {createJSONStorage, persist} from "zustand/middleware";
 import {create} from 'zustand';
-import {initialMqttSensorsData, MqttSensorsDataResponse} from "@/src/types/interfaces/mqtt-sensors-data-response";
+import {
+    initialMqttSensorsData,
+    MqttSensorsDataResponse
+} from "@/src/types/interfaces/mqtt-sensors-data-response";
 
 const SETTINGS_KEY = 'autorun_mqtt_settings';
 const CAR_ICON_STORAGE_KEY = 'autorun_car_icon_storage';
@@ -17,6 +20,7 @@ interface SettingsState {
     settings: UserSettings | null;
     hasHydrated: boolean;
     mqttData: MqttSensorsDataResponse;
+    mqttDataUpdateTime: string | null;
     mqttStatus: 'connected' | 'disconnected' | 'connecting';
     setSettings: (settings: UserSettings) => void;
     removeCarById: (carId: string) => void;
@@ -60,6 +64,7 @@ export const useSettingsStore = create<SettingsState>()(
             settings: null,
             hasHydrated: false,
             mqttData: initialMqttSensorsData,
+            mqttDataUpdateTime: null,
             mqttStatus: 'disconnected',
             setSettings: (settings: UserSettings) => set({settings}),
             removeCarById: async (carId: string) => {
@@ -89,8 +94,13 @@ export const useSettingsStore = create<SettingsState>()(
                 const exists = state.settings.savedEntities.find(e => e.id === settings.id);
 
                 return exists
-                    ? { settings: { ...state.settings, savedEntities: state.settings.savedEntities.map(e => e.id === settings.id ? settings : e) } }
-                    : { settings: { ...state.settings, savedEntities: [...state.settings.savedEntities, settings] } };
+                    ? {
+                        settings: {
+                            ...state.settings,
+                            savedEntities: state.settings.savedEntities.map(e => e.id === settings.id ? settings : e)
+                        }
+                    }
+                    : {settings: {...state.settings, savedEntities: [...state.settings.savedEntities, settings]}};
             }),
             getActiveCar: () => {
                 const {settings} = get();
@@ -109,14 +119,14 @@ export const useSettingsStore = create<SettingsState>()(
                     };
                 });
             },
-            setHasHydrated: (state) => set({ hasHydrated: state }),
-            setMqttData: (data) => set({ mqttData: data }),
-            setMqttStatus: (status) => set({ mqttStatus: status }),
+            setHasHydrated: (state) => set({hasHydrated: state}),
+            setMqttData: (data) => set({mqttData: data, mqttDataUpdateTime: new Date().toTimeString().slice(0, 8)}),
+            setMqttStatus: (status) => set({mqttStatus: status}),
         }),
         {
             name: SETTINGS_KEY,
             storage: createJSONStorage(() => localStorage),
-            partialize: (state) => ({ settings: state.settings }),
+            partialize: (state) => ({settings: state.settings}),
             onRehydrateStorage: () => (state) => {
                 state?.setHasHydrated(true);
             },
