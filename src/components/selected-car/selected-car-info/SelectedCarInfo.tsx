@@ -7,7 +7,7 @@ import {MqttSettings} from "@/src/types/interfaces/mqtt-settings";
 export default function SelectedCarInfo({ car, isConnected, updateTime }: { car: MqttSettings, isConnected: boolean, updateTime: string | null }) {
     return (
         <Box sx={{ py: 1, bgcolor: 'plat.bg' }}>
-            <Typography variant="overline" sx={{ color: 'plat.textMuted', fontWeight: 700, display: 'block', fontSize: '12px', lineHeight: 1.5  }}>
+            <Typography variant="overline" sx={{ color: 'plat.textMuted', fontWeight: 700, display: 'block', fontSize: '14px', lineHeight: 1.5  }}>
                 Мой автомобиль
             </Typography>
             <Typography sx={{ color: 'plat.textDark', fontSize: '12px', mb: 1 }}>

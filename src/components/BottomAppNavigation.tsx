@@ -1,7 +1,7 @@
 'use client'
 import {BottomNavigation, BottomNavigationAction} from "@mui/material";
 import SettingsIcon from '@mui/icons-material/Settings';
-import AltRouteIcon from '@mui/icons-material/AltRoute';
+import SensorsIcon from '@mui/icons-material/Sensors';
 import HomeIcon from '@mui/icons-material/Home';
 import {useState} from "react";
 import {usePathname, useRouter} from "next/navigation";
@@ -32,9 +32,9 @@ export default function BottomAppNavigation() {
                 setValue(newValue);
             }}
         >
-            <BottomNavigationAction label="Actions" icon={<AltRouteIcon/>} value="Actions"/>
-            <BottomNavigationAction label="Home" icon={<HomeIcon/>} value="Home"/>
-            <BottomNavigationAction label="Settings" icon={<SettingsIcon/>} value="Settings"/>
+            <BottomNavigationAction label='Сенсоры' icon={<SensorsIcon/>} value="Actions"/>
+            <BottomNavigationAction label='Авто' icon={<HomeIcon/>} value="Home"/>
+            <BottomNavigationAction label='Настройки' icon={<SettingsIcon/>} value="Settings"/>
         </BottomNavigation>
     );
 }

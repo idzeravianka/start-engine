@@ -37,7 +37,7 @@ export default function RemoteStart({ sensorsData }: {sensorsData: MqttSensorsDa
                 color: 'plat.textMuted',
                 fontWeight: 700,
                 display: 'block',
-                fontSize: '10px',
+                fontSize: '12px',
                 lineHeight: 1.5,
                 mb: 1,
             }}>
@@ -97,7 +97,7 @@ export default function RemoteStart({ sensorsData }: {sensorsData: MqttSensorsDa
                             color: 'plat.textMuted',
                             fontWeight: 700,
                             display: 'block',
-                            fontSize: '10px',
+                            fontSize: '12px',
                             lineHeight: 1.5
                         }}>
                             Запуск
@@ -110,7 +110,7 @@ export default function RemoteStart({ sensorsData }: {sensorsData: MqttSensorsDa
                 </Stack>
             </Box>
 
-            <Typography sx={{ mt: 1, color: 'plat.textDark', fontSize: '10px' }}>
+            <Typography sx={{ mt: 1, color: 'plat.textDark', fontSize: '12px' }}>
                 Двигатель: <Box component="span" sx={{ color: false ? 'plat.textSuccess' : 'plat.textWarning', fontWeight: 700 }}>ЗАГЛУШЕН</Box>
             </Typography>
         </Box>
@@ -130,15 +130,15 @@ function StatusItem({icon, value, label}: { icon: React.ReactNode, value: string
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                minWidth: 70,
-                minHeight: 70,
+                minWidth: 65,
+                minHeight: 65,
                 width: '100%',
                 height: '100%',
             }}
         >
             <Box sx={{color: 'plat.textMuted'}}>{icon}</Box>
-            <Typography sx={{fontSize: '10px', fontWeight: 700, color: 'plat.textDark'}}>{value}</Typography>
-            <Typography sx={{fontSize: '10px', color: 'plat.textDark'}}>{label}</Typography>
+            <Typography sx={{fontSize: '12px', fontWeight: 700, color: 'plat.textDark'}}>{value}</Typography>
+            {/*<Typography sx={{fontSize: '10px', color: 'plat.textDark'}}>{label}</Typography>*/}
         </Paper>
     );
 }
