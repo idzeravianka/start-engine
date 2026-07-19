@@ -4,9 +4,9 @@ import React, {useState} from "react";
 import CarList from "../../../components/CarList";
 import {useRouter} from "next/navigation";
 import {useSettingsStore} from "@/src/utils/user-settings-store";
-import {ConfirmDialog} from "../../../components/ConfirmDialog";
+import {ConfirmDialog} from "@/src/components/ConfirmDialog";
 import {MqttSettings} from "@/src/types/interfaces/mqtt-settings";
-import {VERTICAL_CENTERING} from "@/src/const/vertical-centering";
+import {VERTICAL_CENTERING} from "@/src/const/common-sx-styles";
 
 const EMPTY_ARRAY: MqttSettings[] = [];
 

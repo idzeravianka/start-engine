@@ -4,7 +4,7 @@ import PageContainer from "@/src/components/PageContainer";
 import {Box, Button} from "@mui/material";
 import React from "react";
 import {useRouter} from "next/navigation";
-import {VERTICAL_CENTERING} from "@/src/const/vertical-centering";
+import {VERTICAL_CENTERING} from "@/src/const/common-sx-styles";
 
 export default function Settings() {
     const router = useRouter();

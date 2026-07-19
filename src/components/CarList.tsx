@@ -7,6 +7,7 @@ import AddIcon from '@mui/icons-material/Add';
 import React from "react";
 import {MqttSettings} from "@/src/types/interfaces/mqtt-settings";
 import CarImage from "@/src/components/CarImage";
+import {POINT_CUTTING} from "@/src/const/common-sx-styles";
 
 interface CarListProps {
     cars: MqttSettings[];
@@ -43,16 +44,12 @@ export default function CarList({cars, onEdit, onRemove, onAddNew}: CarListProps
                                     fontWeight: 700,
                                     fontSize: '14px',
                                     color: 'plat.textDark',
-                                    whiteSpace: 'nowrap',
-                                    overflow: 'hidden',
-                                    textOverflow: 'ellipsis',
+                                    ...POINT_CUTTING,
                                 }}>{car.name}</Typography>
                             <Typography sx={{
                                 fontSize: '10px',
                                 color: 'plat.textMuted',
-                                whiteSpace: 'nowrap',
-                                overflow: 'hidden',
-                                textOverflow: 'ellipsis',
+                                ...POINT_CUTTING,
                             }}>{car.server}</Typography>
                         </Box>
 

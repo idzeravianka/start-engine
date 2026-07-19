@@ -1,7 +1,7 @@
 'use client';
 
 import React, {useState} from 'react';
-import {Box, Typography, Paper, Stack, CircularProgress} from '@mui/material';
+import {Box, Typography, Stack, CircularProgress} from '@mui/material';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import BatteryCharging80Icon from '@mui/icons-material/BatteryCharging80';
 import AvTimerIcon from '@mui/icons-material/AvTimer';
@@ -11,16 +11,20 @@ import {useHaptic} from "@mxerf/tappt/react";
 import {MqttSensorsDataResponse} from "@/src/types/interfaces/mqtt-sensors-data-response";
 import {PinStatuses} from "@/src/types/enums/pin-statuses";
 import {TemperatureStatuses} from "@/src/types/enums/temperature-statuses";
+import {MqttSettings} from "@/src/types/interfaces/mqtt-settings";
+import SensorItem from "@/src/components/SensorItem";
 
-export default function RemoteStart({ sensorsData }: {sensorsData: MqttSensorsDataResponse | null}) {
+export default function RemoteStart({ car, sensorsData }: {car: MqttSettings | null, sensorsData: MqttSensorsDataResponse | null}) {
     const [holdTimeout, setHoldTimeout] = useState<ReturnType<typeof setTimeout> | undefined>(undefined);
     const haptic = useHaptic();
 
     const startPress = () => {
+        if (!car || !sensorsData) return;
+
         const holdTime = 1500;
-        haptic.impact('light');
+        haptic.impact('medium');
         setHoldTimeout(setTimeout(() => {
-            haptic.impact('medium');
+            haptic.impact('light');
             clearTimeout(holdTimeout);
             setHoldTimeout(undefined);
         }, holdTime));
@@ -46,8 +50,8 @@ export default function RemoteStart({ sensorsData }: {sensorsData: MqttSensorsDa
 
             <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                 <Stack spacing={1}>
-                    <StatusItem icon={<KeyIcon sx={{fontSize: '16px'}} />} value={sensorsData?.pin?.[PinStatuses.K2] === 1 ? 'ON' : 'OFF'} label="Зажигание" />
-                    <StatusItem icon={<ThermostatIcon sx={{fontSize: '16px'}} />} value={`${sensorsData?.temp?.[TemperatureStatuses.Temp1] || '--'} °C`} label="Температура" />
+                    <SensorItem icon={<KeyIcon sx={{fontSize: '16px'}} />} value={sensorsData?.pin?.[PinStatuses.K2] === 1 ? 'ON' : 'OFF'} label="Зажигание" />
+                    <SensorItem icon={<ThermostatIcon sx={{fontSize: '16px'}} />} value={`${sensorsData?.temp?.[TemperatureStatuses.Temp1] || '--'} °C`} label="Температура" />
                 </Stack>
                 <Box sx={{position: 'relative'}}>
                     <Box
@@ -105,40 +109,22 @@ export default function RemoteStart({ sensorsData }: {sensorsData: MqttSensorsDa
                     </Box>
                 </Box>
                 <Stack spacing={1}>
-                    <StatusItem icon={<BatteryCharging80Icon sx={{fontSize: '16px'}} />} value={`${sensorsData?.pin?.[PinStatuses.Voltage] || '--'} V`} label="Заряд АКБ" />
-                    <StatusItem icon={<AvTimerIcon sx={{fontSize: '16px'}} />} value='--.--' label="Таймер" />
+                    <SensorItem icon={<BatteryCharging80Icon sx={{fontSize: '16px'}} />} value={`${sensorsData?.pin?.[PinStatuses.Voltage] || '--'} V`} label="Заряд АКБ" />
+                    <SensorItem icon={<AvTimerIcon sx={{fontSize: '16px'}} />} value='--.--' label="Таймер" />
                 </Stack>
             </Box>
 
-            <Typography sx={{ mt: 1, color: 'plat.textDark', fontSize: '12px' }}>
-                Двигатель: <Box component="span" sx={{ color: false ? 'plat.textSuccess' : 'plat.textWarning', fontWeight: 700 }}>ЗАГЛУШЕН</Box>
-            </Typography>
+            <EngineStatus car={car} sensorsData={sensorsData} />
         </Box>
     );
 }
 
-function StatusItem({icon, value, label}: { icon: React.ReactNode, value: string, label: string }) {
+function EngineStatus({ car, sensorsData }: {car: MqttSettings | null, sensorsData: MqttSensorsDataResponse | null}) {
+    if (!car) return <></>;
+
     return (
-        <Paper
-            elevation={0}
-            sx={{
-                p: 0.5,
-                borderRadius: '12px',
-                border: '1px solid',
-                borderColor: 'plat.border',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                minWidth: 65,
-                minHeight: 65,
-                width: '100%',
-                height: '100%',
-            }}
-        >
-            <Box sx={{color: 'plat.textMuted'}}>{icon}</Box>
-            <Typography sx={{fontSize: '12px', fontWeight: 700, color: 'plat.textDark'}}>{value}</Typography>
-            {/*<Typography sx={{fontSize: '10px', color: 'plat.textDark'}}>{label}</Typography>*/}
-        </Paper>
-    );
+        <Typography sx={{ mt: 1, color: 'plat.textDark', fontSize: '12px' }}>
+            Двигатель: <Box component="span" sx={{ color: false ? 'plat.textSuccess' : 'plat.textWarning', fontWeight: 700 }}>ЗАГЛУШЕН</Box>
+        </Typography>
+    )
 }

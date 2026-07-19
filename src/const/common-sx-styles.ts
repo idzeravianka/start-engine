@@ -5,3 +5,9 @@ export const VERTICAL_CENTERING = {
     flexFlow: 'column nowrap',
     justifyContent: 'center',
 };
+
+export const POINT_CUTTING = {
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+}
