@@ -4,7 +4,7 @@ import { Box, Typography, Paper, Chip } from '@mui/material';
 import {MqttSettings} from "@/src/types/interfaces/mqtt-settings";
 import CarImage from "@/src/components/CarImage";
 
-export default function SelectedCarInfo({ car, isConnected, updateTime }: { car: MqttSettings, isConnected: boolean, updateTime: string | null }) {
+export default function SelectedCarInfo({ car, isConnected, updateTime }: { car: MqttSettings | null, isConnected: boolean, updateTime: string | null }) {
     return (
         <Box sx={{ py: 1, bgcolor: 'plat.bg' }}>
             <Typography variant="overline" sx={{ color: 'plat.textMuted', fontWeight: 700, display: 'block', fontSize: '14px', lineHeight: 1.5  }}>

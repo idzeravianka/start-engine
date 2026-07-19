@@ -3,20 +3,20 @@
 import React, {useState, useEffect} from 'react';
 import {carIconService} from "@/src/utils/user-settings-store";
 
-export default function CarImage({ carId }: { carId: string }) {
+export default function CarImage({ carId }: { carId?: string }) {
     const [src, setSrc] = useState<string | null>(null);
 
     useEffect(() => {
         let isMounted = true;
 
         async function loadImage() {
-            const imageUrl = await carIconService.load(carId);
+            const imageUrl = await carIconService.load(carId!);
             if (isMounted && imageUrl) {
                 setSrc(imageUrl);
             }
         }
 
-        loadImage();
+        if (carId) loadImage();
 
         return () => {
             isMounted = false;

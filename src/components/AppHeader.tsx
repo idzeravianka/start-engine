@@ -2,6 +2,7 @@ import {CarSwitcher} from "@/src/components/CarSwitcher";
 import {Box, Typography} from "@mui/material";
 import React from "react";
 import {usePathname} from "next/navigation";
+import {useSettingsStore} from "@/src/utils/user-settings-store";
 
 const HEADER_LABEL_CONFIG = {
     '/': <CarSwitcher/>,
@@ -14,9 +15,10 @@ type PathNamesType = keyof typeof HEADER_LABEL_CONFIG;
 
 export default function AppHeader() {
     const pathname: PathNamesType = usePathname() as PathNamesType;
+    const hasHydrated = useSettingsStore((state) => state.hasHydrated);
 
     return (
-        <Box
+        hasHydrated && <Box
             sx={{
                 pt: 2,
                 pb: 1,
