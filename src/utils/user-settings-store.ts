@@ -4,9 +4,10 @@ import localforage from "localforage";
 import {createJSONStorage, persist} from "zustand/middleware";
 import {create} from 'zustand';
 import {
-    initialMqttSensorsData,
     MqttSensorsDataResponse
 } from "@/src/types/interfaces/mqtt-sensors-data-response";
+import {INITIAL_USER_SETTINGS} from "@/src/const/initial-user-settings";
+import {INITIAL_MQTT_SENSORS_DATA} from "@/src/const/initial-mqtt-sensors-data";
 
 const SETTINGS_KEY = 'autorun_mqtt_settings';
 const CAR_ICON_STORAGE_KEY = 'autorun_car_icon_storage';
@@ -17,7 +18,7 @@ localforage.config({
 });
 
 interface SettingsState {
-    settings: UserSettings | null;
+    settings: UserSettings;
     hasHydrated: boolean;
     mqttData: MqttSensorsDataResponse;
     mqttDataUpdateTime: string | null;
@@ -61,9 +62,9 @@ export const carIconService = {
 export const useSettingsStore = create<SettingsState>()(
     persist(
         (set, get) => ({
-            settings: null,
+            settings: INITIAL_USER_SETTINGS,
             hasHydrated: false,
-            mqttData: initialMqttSensorsData,
+            mqttData: INITIAL_MQTT_SENSORS_DATA,
             mqttDataUpdateTime: null,
             mqttStatus: 'disconnected',
             setSettings: (settings: UserSettings) => set({settings}),
@@ -89,18 +90,17 @@ export const useSettingsStore = create<SettingsState>()(
                 })
             },
             addOrUpdateConnection: (settings: MqttSettings) => set((state) => {
-                if (!state.settings) return state;
-
                 const exists = state.settings.savedEntities.find(e => e.id === settings.id);
 
                 return exists
                     ? {
                         settings: {
                             ...state.settings,
-                            savedEntities: state.settings.savedEntities.map(e => e.id === settings.id ? settings : e)
+                            savedEntities: state.settings.savedEntities.map(e => e.id === settings.id ? settings : e),
+                            selectedEntityId: settings.id,
                         }
                     }
-                    : {settings: {...state.settings, savedEntities: [...state.settings.savedEntities, settings]}};
+                    : {settings: {...state.settings, savedEntities: [...state.settings.savedEntities, settings], selectedEntityId: settings.id}};
             }),
             getActiveCar: () => {
                 const {settings} = get();
