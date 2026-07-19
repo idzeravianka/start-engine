@@ -15,7 +15,7 @@ export const CarSwitcher = () => {
 
     const addNewCar = () => router.push(`/settings/connections/setup-connection?id=new`);
 
-    if (!settings || !activeCar) return null;
+    if (!settings || !activeCar) return <Box />;
 
     return (
         <Box>
