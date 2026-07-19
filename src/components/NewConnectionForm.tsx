@@ -9,7 +9,7 @@ import {
     Button,
 } from '@mui/material';
 import {ObjectSchema} from "yup";
-import {ConnectionFormDT, NewConnectionFormDT} from "@/src/components/connection-form/connection-form.interface";
+import {ConnectionFormDT, NewConnectionFormDT} from "../types/interfaces/connection-form.interface";
 import {generateId} from "@/src/utils/generate-id";
 import {carIconService} from "@/src/utils/user-settings-store";
 

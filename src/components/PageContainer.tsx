@@ -1,18 +1,11 @@
 import {ReactNode} from "react";
-import {Container, Paper} from "@mui/material";
+import {Container, Paper, SxProps} from "@mui/material";
 
 
-export default function PageContainer({ children }: { children: ReactNode }) {
+export default function PageContainer({ children, customSx }: { children: ReactNode, customSx?: SxProps }) {
     return (
-        <Container sx={{pb: 2, px: 2}}>
+        <Container sx={{pb: 2, px: 2, ...customSx}}>
             <Paper elevation={0}>
-                <div style={{
-                    display: 'flex',
-                    flexFlow: 'row nowrap',
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                }}>
-                </div>
                 {children}
             </Paper>
         </Container>

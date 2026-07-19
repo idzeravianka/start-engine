@@ -2,10 +2,10 @@
 import React, {useState} from 'react';
 import {Button, Drawer, List, ListItem, ListItemButton, ListItemText, Box, Typography} from '@mui/material';
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
-import {useSettingsStore} from '@/src/utils/user-settings-store';
-import CarImage from "@/src/components/CarImage";
 import AddIcon from "@mui/icons-material/Add";
 import {useRouter} from "next/navigation";
+import {useSettingsStore} from "@/src/utils/user-settings-store";
+import CarImage from "@/src/components/CarImage";
 
 export const CarSwitcher = () => {
     const router = useRouter();

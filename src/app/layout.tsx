@@ -5,9 +5,10 @@ import {Geist, Geist_Mono} from "next/font/google";
 import "./globals.css";
 import BottomAppNavigation from "@/src/components/BottomAppNavigation";
 import {AppRouterCacheProvider} from "@mui/material-nextjs/v16-appRouter";
-import {Box, ThemeProvider, useTheme} from "@mui/material";
+import {Box, ThemeProvider} from "@mui/material";
 import {theme} from "@/src/styles/theme";
-import {MqttProvider} from "@/src/components/mqtt-provider/MqttProvider";
+import {MqttProvider} from "../components/MqttProvider";
+import AppHeader from "@/src/components/AppHeader";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -43,6 +44,7 @@ export default function RootLayout({children}: Readonly<{ children: React.ReactN
                         backgroundColor: 'plat.bg'
                     }}>
                         <MqttProvider>
+                            <AppHeader />
                             {children}
                         </MqttProvider>
                     </Box>

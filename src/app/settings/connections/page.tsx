@@ -1,12 +1,12 @@
 'use client';
 import PageContainer from "@/src/components/PageContainer";
-import {Box} from "@mui/material";
 import React, {useState} from "react";
-import CarList from "@/src/components/car-list/CarList";
+import CarList from "../../../components/CarList";
 import {useRouter} from "next/navigation";
 import {useSettingsStore} from "@/src/utils/user-settings-store";
-import {ConfirmDialog} from "@/src/components/confirm-dialog/ConfirmDialog";
+import {ConfirmDialog} from "../../../components/ConfirmDialog";
 import {MqttSettings} from "@/src/types/interfaces/mqtt-settings";
+import {VERTICAL_CENTERING} from "@/src/const/vertical-centering";
 
 const EMPTY_ARRAY: MqttSettings[] = [];
 
@@ -34,8 +34,7 @@ export default function Connections() {
     };
 
     return (
-        <PageContainer>
-            <Box sx={{backgroundColor: 'plat.bg', textAlign: 'center', p: 2}}>Список автомобилей</Box>
+        <PageContainer customSx={VERTICAL_CENTERING}>
             <CarList cars={cars} onEdit={handleEditCar} onRemove={handleRemoveCarRequest}
                      onAddNew={handleAddNewCar}></CarList>
             <ConfirmDialog

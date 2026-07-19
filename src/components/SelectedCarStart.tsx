@@ -7,10 +7,10 @@ import BatteryCharging80Icon from '@mui/icons-material/BatteryCharging80';
 import AvTimerIcon from '@mui/icons-material/AvTimer';
 import ThermostatIcon from '@mui/icons-material/Thermostat';
 import KeyIcon from '@mui/icons-material/Key';
+import {useHaptic} from "@mxerf/tappt/react";
 import {MqttSensorsDataResponse} from "@/src/types/interfaces/mqtt-sensors-data-response";
 import {PinStatuses} from "@/src/types/enums/pin-statuses";
 import {TemperatureStatuses} from "@/src/types/enums/temperature-statuses";
-import {useHaptic} from "@mxerf/tappt/react";
 
 export default function RemoteStart({ sensorsData }: {sensorsData: MqttSensorsDataResponse | null}) {
     const [holdTimeout, setHoldTimeout] = useState<ReturnType<typeof setTimeout> | undefined>(undefined);

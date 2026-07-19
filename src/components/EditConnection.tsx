@@ -2,10 +2,9 @@
 import {useRouter, useSearchParams} from "next/navigation";
 import React, {useMemo} from "react";
 import {useSettingsStore} from "@/src/utils/user-settings-store";
-import {ConnectionFormDT} from "@/src/components/connection-form/connection-form.interface";
+import {ConnectionFormDT} from "../types/interfaces/connection-form.interface";
 import PageContainer from "@/src/components/PageContainer";
-import {Box} from "@mui/material";
-import NewConnectionForm from "@/src/components/connection-form/NewConnectionForm";
+import NewConnectionForm from "./NewConnectionForm";
 
 export default function EditConnection() {
     const searchParams = useSearchParams();
@@ -26,7 +25,6 @@ export default function EditConnection() {
 
     return (
         <PageContainer>
-            <Box sx={{backgroundColor: 'plat.bg', textAlign: 'center', p: 2}}>Настройки устройства</Box>
             <NewConnectionForm
                 initialData={initialData}
                 onSave={handleSaveOrUpdate} />

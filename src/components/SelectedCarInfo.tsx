@@ -1,8 +1,8 @@
 'use client';
 
 import { Box, Typography, Paper, Chip } from '@mui/material';
-import CarImage from "@/src/components/CarImage";
 import {MqttSettings} from "@/src/types/interfaces/mqtt-settings";
+import CarImage from "@/src/components/CarImage";
 
 export default function SelectedCarInfo({ car, isConnected, updateTime }: { car: MqttSettings, isConnected: boolean, updateTime: string | null }) {
     return (

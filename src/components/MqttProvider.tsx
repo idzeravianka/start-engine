@@ -1,7 +1,7 @@
 'use client';
 import { useEffect } from 'react';
-import { useSettingsStore } from '@/src/utils/user-settings-store';
-import { getMqttClient, disconnectMqtt } from '@/src/utils/mqtt-client';
+import {useSettingsStore} from "@/src/utils/user-settings-store";
+import {disconnectMqtt, getMqttClient} from "@/src/utils/mqtt-client";
 
 export function MqttProvider({ children }: { children: React.ReactNode }) {
     const activeCar = useSettingsStore(state => state.getActiveCar());
