@@ -1,4 +1,5 @@
 import { DashboardItemNames } from '../enums/dashboard-item-names';
+import {MqttSensorsDataResponse} from "@/src/types/interfaces/mqtt-sensors-data-response";
 
 export interface UserSettings {
   savedEntities: MqttSettings[];
@@ -30,11 +31,11 @@ export interface DashboardItemsSettings {
   [DashboardItemNames.Temp3]: ItemSettings;
   [DashboardItemNames.Timer]: ItemSettings;
   [DashboardItemNames.Count]: ItemSettings;
-  [DashboardItemNames.CentralLock]: ItemSettings;
-  [DashboardItemNames.WebastoButtons]: ItemSettings;
 }
 
 export interface ItemSettings {
-  name: string;
+  label: string;
   isVisible: boolean;
+  icon: React.ReactNode;
+  getValue: (sensorsData: MqttSensorsDataResponse | null) => string | number;
 }

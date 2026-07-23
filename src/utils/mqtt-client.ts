@@ -3,6 +3,7 @@ import mqtt, { MqttClient, IClientOptions } from 'mqtt';
 import {MqttSettings} from "@/src/types/interfaces/mqtt-settings";
 import {useSettingsStore} from "@/src/utils/user-settings-store";
 import {MqttSensorsDataResponse} from "@/src/types/interfaces/mqtt-sensors-data-response";
+import {MqttCommands} from "@/src/types/enums/mqtt-commands";
 
 const MQTT_DEFAULT_OPTIONS: IClientOptions = {
     encoding: 'utf8',
@@ -19,6 +20,7 @@ let client: MqttClient | null = null;
 export const getMqttClient = (activeCar: MqttSettings, onMessageCallback: (sensorsData: MqttSensorsDataResponse) => void): MqttClient => {
     if (client && client.options.clientId !== `${activeCar.id}_${activeCar.name}`) {
         disconnectMqtt();
+        return getMqttClient(activeCar, onMessageCallback);
     }
     if (!client) {
         client = mqtt.connect(`wss://${activeCar.server}`, {
@@ -32,6 +34,7 @@ export const getMqttClient = (activeCar: MqttSettings, onMessageCallback: (senso
         client.on('connect', () => {
             useSettingsStore.getState().setMqttStatus('connected');
             client!.subscribe(`${activeCar.topic}/pub`, {qos: 0});
+            sendCommand(`${activeCar.topic}`, MqttCommands.Update);
         });
 
         client.on('offline', () => {
@@ -49,9 +52,9 @@ export const getMqttClient = (activeCar: MqttSettings, onMessageCallback: (senso
     return client;
 };
 
-export const sendCommand = (topic: string, message: string) => {
+export const sendCommand = (topic: string, message: MqttCommands) => {
     if (client?.connected) {
-        client.publish(topic, message, { qos: 1 });
+        client.publish(`${topic}/sub`, message, { qos: 1 });
     }
 };
 

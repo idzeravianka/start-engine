@@ -53,12 +53,12 @@ function CarUpdateDate({car, updateTime}: { car: MqttSettings | null, updateTime
         )
     }
     return (
-        <Box sx={{display: 'flex', flexFlow: 'row nowrap', color: 'plat.textDark', fontSize: '12px', mb: 1}}>
+        <Box sx={{display: 'flex', flexFlow: 'row nowrap', gap: 0.5, color: 'plat.textDark', fontSize: '12px', mb: 1}}>
             <Typography sx={{color: 'plat.textDark', fontSize: '12px', maxWidth: '120px', ...POINT_CUTTING}}>
                 {car.server}
             </Typography>
             <Typography sx={{color: 'plat.textDark', fontSize: '12px'}}>
-                {updateTime ? ` | Обновлено в: ${updateTime}` : ''}
+                {updateTime ? `| Обновлено в: ${updateTime}` : ''}
             </Typography>
         </Box>
 

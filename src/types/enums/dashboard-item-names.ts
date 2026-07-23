@@ -11,6 +11,4 @@ export enum DashboardItemNames {
   Temp3 = 'temp3',
   Timer = 'timer',
   Count = 'count',
-  CentralLock = 'centralLock',
-  WebastoButtons = 'webastoButtons',
 }

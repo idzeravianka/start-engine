@@ -2,7 +2,7 @@
 import React from "react";
 import {Box, Paper, Typography} from "@mui/material";
 
-export default function SensorItem({icon, value, label}: { icon: React.ReactNode, value: string, label: string }) {
+export default function SensorItem({icon, value, label}: { icon: React.ReactNode, value: string, label?: string }) {
     return (
         <Paper
             elevation={0}
@@ -23,7 +23,7 @@ export default function SensorItem({icon, value, label}: { icon: React.ReactNode
         >
             <Box sx={{color: 'plat.textMuted'}}>{icon}</Box>
             <Typography sx={{fontSize: '12px', fontWeight: 700, color: 'plat.textDark'}}>{value}</Typography>
-            {/*<Typography sx={{fontSize: '10px', color: 'plat.textDark'}}>{label}</Typography>*/}
+            {label && <Typography sx={{fontSize: '10px', color: 'plat.textDark', textAlign: 'center'}}>{label}</Typography>}
         </Paper>
     );
 }

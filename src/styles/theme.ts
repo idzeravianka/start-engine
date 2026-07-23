@@ -13,6 +13,7 @@ declare module '@mui/material/styles' {
             brandCobalt: string;
             brandCobaltHover: string;
             brandCopper: string;
+            brandMuted: string;
         };
     }
     interface PaletteOptions {
@@ -27,6 +28,7 @@ declare module '@mui/material/styles' {
             brandCobalt: string;
             brandCobaltHover: string;
             brandCopper: string;
+            brandMuted: string;
         };
     }
 }
@@ -44,6 +46,7 @@ export const theme = createTheme({
             brandCobalt: '#1E40AF',
             brandCobaltHover: '#1D4ED8',
             brandCopper: '#C2410C',
+            brandMuted: '#64748B',
         },
         background: {
             default: '#ECEFF1',

@@ -8,6 +8,7 @@ const HEADER_LABEL_CONFIG = {
     '/settings': 'Настройки',
     '/settings/connections': 'Список автомобилей',
     '/settings/connections/setup-connection': 'Настройки устройства',
+    '/sensors': 'Данные',
 }
 
 type PathNamesType = keyof typeof HEADER_LABEL_CONFIG;

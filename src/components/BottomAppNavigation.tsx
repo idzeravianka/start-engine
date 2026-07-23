@@ -11,7 +11,7 @@ export default function BottomAppNavigation() {
 
     const getCurrentTab = () => {
         if (pathname.includes('/settings')) return 'Settings';
-        if (pathname.includes('/actions')) return 'Actions';
+        if (pathname.includes('/sensors')) return 'Sensors';
         return 'Home';
     };
 
@@ -23,10 +23,10 @@ export default function BottomAppNavigation() {
             onChange={(_, newValue) => {
                 if (newValue === 'Home') router.replace('/');
                 if (newValue === 'Settings') router.replace('/settings');
-                if (newValue === 'Actions') router.replace('/actions');
+                if (newValue === 'Sensors') router.replace('/sensors');
             }}
         >
-            <BottomNavigationAction label='Сенсоры' icon={<SensorsIcon/>} value="Actions" />
+            <BottomNavigationAction label='Сенсоры' icon={<SensorsIcon/>} value="Sensors" />
             <BottomNavigationAction label='Авто' icon={<HomeIcon/>} value="Home"/>
             <BottomNavigationAction label='Настройки' icon={<SettingsIcon/>} value="Settings"/>
         </BottomNavigation>
