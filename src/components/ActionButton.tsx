@@ -2,7 +2,7 @@
 import React, { useState, useRef } from 'react';
 import {Box, Button, Typography} from "@mui/material";
 
-export const ActionButton = ({ label, status, icon, disabled, onAction }: { label?: string, status?: string, icon: React.ReactNode, disabled?: boolean, onAction: () => void }) => {
+export const ActionButton = ({ label, status, icon, disabled, onAction }: { label?: string, status?: string, icon?: React.ReactNode, disabled?: boolean, onAction: () => void }) => {
     const [isHolding, setIsHolding] = useState(false);
     const holdTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -71,7 +71,7 @@ export const ActionButton = ({ label, status, icon, disabled, onAction }: { labe
                 }
             }}
         >
-            <Box sx={{'& .MuiSvgIcon-root': {color: 'plat.textMuted'}}}>{icon}</Box>
+            {icon && <Box sx={{'& .MuiSvgIcon-root': {color: 'plat.textMuted'}}}>{icon}</Box>}
             {status && <Typography sx={{fontSize: '12px', fontWeight: 700, color: 'plat.textDark'}}>{status}</Typography>}
             {label && <Typography sx={{fontSize: '10px', color: 'plat.textDark', textAlign: 'center', textTransform: 'none'}}>{label}</Typography>}
         </Button>
