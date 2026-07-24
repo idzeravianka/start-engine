@@ -58,7 +58,7 @@ export const defaultQuickActionButtonsSettings: IActionButton[] = [
     {
         label: "Стартер 2.5 сек",
         isVisible: true,
-        icon: <StarterIcon sx={{fontSize: '16px'}} />,
+        icon: <StarterIcon />,
         command: () => MqttCommands.StarterCrankTime2And5Sec,
         onAction: (topic, command) => sendCommand(topic, command),
     },

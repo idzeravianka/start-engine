@@ -24,7 +24,7 @@ export default function QuickActions({car, sensorsData, disabled}: {
             }}>
                 Быстрые действия
             </Typography>
-            <Box sx={{display: 'flex', flexFlow: 'row nowrap', alignItems: 'center', justifyContent: 'space-between'}}>
+            <Box sx={{display: 'flex', flexFlow: 'row nowrap', alignItems: 'center', justifyContent: 'space-between', gap: 3}}>
                 {defaultQuickActionButtonsSettings.map((setting, index) => (
                     <ActionButton onAction={() => setting.onAction(car!.topic, setting.command(sensorsData))}
                                   icon={setting.icon}
