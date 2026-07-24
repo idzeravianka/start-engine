@@ -11,25 +11,25 @@ export const defaultQuickActionButtonsSettings: IActionButton[] = [
     {
         isVisible: true,
         icon: <LockOpenIcon />,
-        command: MqttCommands.OpenLock,
+        command: () => MqttCommands.OpenLock,
         onAction: (topic, command) => sendCommand(topic, command),
     },
     {
         isVisible: true,
         icon: <LockOutlinedIcon />,
-        command: MqttCommands.CloseLock,
+        command: () => MqttCommands.CloseLock,
         onAction: (topic, command) => sendCommand(topic, command),
     },
     {
         isVisible: true,
         icon: <FanOnIcon />,
-        command: MqttCommands.FanOn,
+        command: () => MqttCommands.FanOn,
         onAction: (topic, command) => sendCommand(topic, command),
     },
     {
         isVisible: true,
         icon: <ModeFanOffOutlinedIcon />,
-        command: MqttCommands.FanOff,
+        command: () => MqttCommands.FanOff,
         onAction: (topic, command) => sendCommand(topic, command),
     }
 ]

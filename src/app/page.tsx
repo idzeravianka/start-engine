@@ -16,7 +16,7 @@ export default function Home() {
         <PageContainer>
             <SelectedCarInfo car={activeCar} isConnected={isConnected} updateTime={mqttDataUpdateTime}/>
             <RemoteStart car={activeCar} sensorsData={mqttData}/>
-            <QuickActions car={activeCar} disabled={!activeCar || !mqttData.pin.length}></QuickActions>
+            <QuickActions car={activeCar} disabled={!activeCar || !mqttData.pin.length} sensorsData={mqttData}></QuickActions>
         </PageContainer>
     );
 }

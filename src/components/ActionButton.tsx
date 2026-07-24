@@ -1,8 +1,8 @@
 'use client';
-import { useState, useRef } from 'react';
-import {Button} from "@mui/material";
+import React, { useState, useRef } from 'react';
+import {Box, Button, Typography} from "@mui/material";
 
-export const ActionButton = ({ icon, disabled, onAction }: { icon: React.ReactNode, disabled?: boolean, onAction: () => void }) => {
+export const ActionButton = ({ label, status, icon, disabled, onAction }: { label?: string, status?: string, icon: React.ReactNode, disabled?: boolean, onAction: () => void }) => {
     const [isHolding, setIsHolding] = useState(false);
     const holdTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -36,12 +36,14 @@ export const ActionButton = ({ icon, disabled, onAction }: { icon: React.ReactNo
             onMouseLeave={stop}
             disabled={disabled}
             sx={{
-                width: 65,
+                p: 0.5,
+                width: '100%',
                 height: 65,
                 minWidth: 65,
                 borderRadius: 3,
                 position: 'relative',
                 display: 'flex',
+                flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
                 bgcolor: 'plat.card',
@@ -53,16 +55,14 @@ export const ActionButton = ({ icon, disabled, onAction }: { icon: React.ReactNo
                     position: 'absolute',
                     top: '50%',
                     left: '50%',
-                    width: isHolding ? '100%' : '0%',
-                    height: isHolding ? '100%' : '0%',
-                    marginTop: isHolding ? '-50%' : '0%',
-                    marginLeft: isHolding ? '-50%' : '0%',
+                    width: '100%',
+                    height: '100%',
+                    borderRadius: 3,
                     bgcolor: 'plat.brandCobalt',
                     opacity: 0.15,
-                    borderRadius: 3,
-                    transition: isHolding
-                        ? 'width 1000ms linear, height 1000ms linear, margin-top 1000ms linear, margin-left 1000ms linear'
-                        : 'width 200ms ease-out, height 200ms ease-out, margin-top 200ms ease-out, margin-left 200ms ease-out',
+                    transform: isHolding ? 'translate(-50%, -50%) scale(1)' : 'translate(-50%, -50%) scale(0)',
+                    transformOrigin: 'center center',
+                    transition: isHolding ? 'transform 1000ms linear' : 'transform 200ms ease-out',
                     pointerEvents: 'none',
                 },
                 '& .MuiSvgIcon-root': {
@@ -71,7 +71,9 @@ export const ActionButton = ({ icon, disabled, onAction }: { icon: React.ReactNo
                 }
             }}
         >
-            {icon}
+            <Box sx={{'& .MuiSvgIcon-root': {color: 'plat.textMuted'}}}>{icon}</Box>
+            {status && <Typography sx={{fontSize: '12px', fontWeight: 700, color: 'plat.textDark'}}>{status}</Typography>}
+            {label && <Typography sx={{fontSize: '10px', color: 'plat.textDark', textAlign: 'center', textTransform: 'none'}}>{label}</Typography>}
         </Button>
     );
 };

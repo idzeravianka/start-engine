@@ -17,7 +17,7 @@ export const defaultSensorsSettings: DashboardItemsSettings = {
         label: 'Заряд АКБ',
         isVisible: true,
         icon: <BatteryCharging80Icon sx={{fontSize: '16px'}}/>,
-        getValue: sensorsData => `${sensorsData?.temp?.[TemperatureStatuses.Temp1] || '--'} °C`,
+        getValue: sensorsData => `${sensorsData?.pin?.[PinStatuses.Voltage] || '--'} V`,
     },
     [DashboardItemNames.Timer]: {
         label: 'Таймер',
