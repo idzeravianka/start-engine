@@ -115,7 +115,10 @@ export const useSettingsStore = create<SettingsState>()(
                         settings: {
                             ...state.settings,
                             selectedEntityId: carId
-                        }
+                        },
+                        mqttData: INITIAL_MQTT_SENSORS_DATA,
+                        mqttDataUpdateTime: null,
+                        mqttStatus: 'disconnected',
                     };
                 });
             },
