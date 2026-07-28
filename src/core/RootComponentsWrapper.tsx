@@ -13,25 +13,15 @@ export default function RootComponentsWrapper({children}: Readonly<{ children: R
     return (
         hasHydrated && <AppRouterCacheProvider options={{enableCssLayer: true}}>
             <ThemeProvider theme={theme}>
-                <Box sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: '100dvh',
-                }}>
-                    <Box sx={{
-                        flexGrow: 1,
-                        overflowY: 'auto',
-                        backgroundColor: 'plat.bg'
-                    }}>
-                        <MqttProvider>
-                            <AppHeader />
-                            {children}
-                        </MqttProvider>
-                    </Box>
-
-                    <Box sx={{backgroundColor: 'plat.bg'}}>
-                        <BottomAppNavigation/>
-                    </Box>
+                <Box sx={{overflowY: 'auto', height: 'calc(100dvh - 84px)'}}>
+                    <MqttProvider>
+                        <AppHeader/>
+                        {children}
+                    </MqttProvider>
+                </Box>
+                <Box sx={{height: '84px'}}></Box>
+                <Box sx={{position: 'fixed', width: '100%', maxWidth: '500px', backgroundColor: 'transparent', bottom: 0 }}>
+                    <BottomAppNavigation/>
                 </Box>
             </ThemeProvider>
         </AppRouterCacheProvider>
