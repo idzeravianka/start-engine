@@ -27,8 +27,8 @@ export const CarSwitcher = () => {
                     fontWeight: 700,
                     textTransform: 'none',
                     p: 0,
-                    fontSize: '14px',
-                    '& .MuiSvgIcon-root': {fontSize: '14px !important'}
+                    fontSize: '16px',
+                    '& .MuiSvgIcon-root': {fontSize: '16px !important'}
                 }}
             >
                 {activeCar.name}

@@ -24,12 +24,13 @@ export default function QuickActions({car, sensorsData, disabled}: {
             }}>
                 Быстрые действия
             </Typography>
-            <Box sx={{display: 'flex', flexFlow: 'row nowrap', alignItems: 'center', justifyContent: 'space-between', gap: 3}}>
+            <Box sx={{display: 'flex', flexFlow: 'row nowrap', alignItems: 'center', justifyContent: 'space-between'}}>
                 {defaultQuickActionButtonsSettings.map((setting, index) => (
                     <ActionButton onAction={() => setting.onAction(car!.topic, setting.command(sensorsData))}
                                   icon={setting.icon}
                                   key={index}
-                                  disabled={disabled}/>))}
+                                  disabled={disabled}
+                                  customSx={{maxWidth: '70px'}}/>))}
             </Box>
         </Box>
     );

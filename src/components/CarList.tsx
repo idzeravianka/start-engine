@@ -2,7 +2,7 @@
 
 import {Box, Typography, Button, IconButton, Paper, Stack} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import SettingsIcon from '@mui/icons-material/Settings';
+import EditNoteIcon from '@mui/icons-material/EditNote';
 import AddIcon from '@mui/icons-material/Add';
 import React from "react";
 import {MqttSettings} from "@/src/types/interfaces/mqtt-settings";
@@ -56,7 +56,7 @@ export default function CarList({cars, onEdit, onRemove, onAddNew}: CarListProps
                         <IconButton
                             onClick={() => onEdit(car.id)}
                             sx={{color: 'brandCobalt', flexShrink: 0}}>
-                            <SettingsIcon fontSize="small"/>
+                            <EditNoteIcon fontSize="small"/>
                         </IconButton>
                         <IconButton
                             onClick={() => onRemove(car.id)}

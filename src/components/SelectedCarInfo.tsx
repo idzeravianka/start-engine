@@ -21,7 +21,7 @@ export default function SelectedCarInfo({car, isConnected, updateTime}: {
             }}>
                 Мой автомобиль
             </Typography>
-            <CarUpdateDate car={car} updateTime={updateTime}/>
+            <CarUpdateDate car={car} updateTime={updateTime} isConnected={isConnected}/>
             <Paper
                 elevation={0}
                 sx={{
@@ -38,13 +38,29 @@ export default function SelectedCarInfo({car, isConnected, updateTime}: {
                     <CarImage carId={car?.id}/>
                 </Box>
 
-                <IsConnectedChip car={car} isConnected={isConnected}/>
+                <CarServer car={car}/>
             </Paper>
         </Box>
     );
 }
 
-function CarUpdateDate({car, updateTime}: { car: MqttSettings | null, updateTime: string | null }) {
+function CarUpdateDate({car, updateTime, isConnected}: {
+    car: MqttSettings | null,
+    updateTime: string | null,
+    isConnected: boolean
+}) {
+    return (
+        <Box sx={{display: 'flex', flexFlow: 'row nowrap', gap: 0.5, color: 'plat.textDark', fontSize: '12px', mb: 1}}>
+            <IsConnectedChip car={car} isConnected={isConnected}/>
+            <Typography sx={{color: 'plat.textDark', fontSize: '12px'}}>
+                {updateTime ? `| Обновлено в: ${updateTime}` : ''}
+            </Typography>
+        </Box>
+
+    )
+}
+
+function CarServer({car}: { car: MqttSettings | null }) {
     if (!car) {
         return (
             <Typography sx={{color: 'plat.textDark', fontSize: '12px', mb: 1}}>
@@ -53,15 +69,9 @@ function CarUpdateDate({car, updateTime}: { car: MqttSettings | null, updateTime
         )
     }
     return (
-        <Box sx={{display: 'flex', flexFlow: 'row nowrap', gap: 0.5, color: 'plat.textDark', fontSize: '12px', mb: 1}}>
-            <Typography sx={{color: 'plat.textDark', fontSize: '12px', maxWidth: '120px', ...POINT_CUTTING}}>
-                {car.server}
-            </Typography>
-            <Typography sx={{color: 'plat.textDark', fontSize: '12px'}}>
-                {updateTime ? `| Обновлено в: ${updateTime}` : ''}
-            </Typography>
-        </Box>
-
+        <Typography sx={{color: 'plat.textDark', fontSize: '12px', maxWidth: '120px', mx: 'auto', ...POINT_CUTTING}}>
+            {car.server}
+        </Typography>
     )
 }
 
@@ -86,6 +96,7 @@ function IsConnectedChip({car, isConnected}: { car: MqttSettings | null, isConne
                 </Box>
             }
             sx={{
+                height: 'fit-content',
                 bgcolor: 'transparent',
                 '& .MuiChip-label': {p: 0}
             }}

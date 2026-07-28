@@ -8,7 +8,8 @@ const HEADER_LABEL_CONFIG = {
     '/settings': 'Настройки',
     '/settings/connections': 'Список автомобилей',
     '/settings/connections/setup-connection': 'Настройки устройства',
-    '/sensors': 'Данные',
+    '/sensors': <CarSwitcher/>,
+    '/commands': <CarSwitcher/>,
 }
 
 type PathNamesType = keyof typeof HEADER_LABEL_CONFIG;
@@ -22,17 +23,18 @@ export default function AppHeader() {
                 pt: 2,
                 pb: 1,
                 px: 2,
+                fontWeight: 700,
                 bgcolor: 'plat.bg',
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 color: 'plat.textDark',
-                fontSize: '14px'
+                fontSize: '16px'
             }}>
             {HEADER_LABEL_CONFIG[pathname]}
             <Typography sx={{
                 color: 'plat.textDark',
-                fontSize: '14px'
+                fontSize: '16px'
             }}>
                 Engine<Box component="span" sx={{color: 'plat.brandCobalt', fontWeight: 700}}>START</Box>
             </Typography>

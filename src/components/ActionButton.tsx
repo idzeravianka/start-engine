@@ -1,8 +1,8 @@
 'use client';
 import React, { useState, useRef } from 'react';
-import {Box, Button, Typography} from "@mui/material";
+import {Box, Button, SxProps, Typography} from "@mui/material";
 
-export const ActionButton = ({ label, status, icon, disabled, onAction }: { label?: string, status?: string, icon?: React.ReactNode, disabled?: boolean, onAction: () => void }) => {
+export const ActionButton = ({ label, status, icon, disabled, customSx, onAction }: { label?: string, status?: string, icon?: React.ReactNode, disabled?: boolean, customSx?: SxProps, onAction: () => void }) => {
     const [isHolding, setIsHolding] = useState(false);
     const holdTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -68,7 +68,8 @@ export const ActionButton = ({ label, status, icon, disabled, onAction }: { labe
                 '& .MuiSvgIcon-root': {
                     color: isHolding ? 'plat.brandCobalt' : 'plat.textDark',
                     transition: 'color 0.3s'
-                }
+                },
+                ...customSx,
             }}
         >
             {icon && <Box sx={{'& .MuiSvgIcon-root': {color: 'plat.textMuted'}}}>{icon}</Box>}

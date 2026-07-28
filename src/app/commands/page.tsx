@@ -2,24 +2,17 @@
 
 import PageContainer from "@/src/components/PageContainer";
 import {Box, Grid, Typography} from "@mui/material";
-import React, {useEffect} from "react";
+import React from "react";
 import {useSettingsStore} from "@/src/utils/user-settings-store";
-import {defaultSensorsSettings} from "@/src/utils/default-dashboard-items-settings";
-import SensorItem from "@/src/components/SensorItem";
+import {defaultQuickActionButtonsSettings} from "@/src/utils/action-buttons-settings";
+import {ActionButton} from "@/src/components/ActionButton";
 import {VERTICAL_CENTERING} from "@/src/const/common-sx-styles";
-import {sendCommand} from "@/src/utils/mqtt-client";
-import {MqttCommands} from "@/src/types/enums/mqtt-commands";
 
-export default function Sensors() {
+export default function Commands() {
     const mqttData = useSettingsStore((state) => state.mqttData);
+    const activeCar = useSettingsStore(state => state.getActiveCar());
     const isConnected = useSettingsStore(state => state.mqttStatus === 'connected');
     const mqttDataUpdateTime = useSettingsStore((state) => state.mqttDataUpdateTime);
-    const activeCar = useSettingsStore(state => state.getActiveCar());
-
-    useEffect(() => {
-        if (!activeCar) return;
-        sendCommand(`${activeCar.topic}`, MqttCommands.Update);
-    }, [activeCar]);
 
     return (
         <PageContainer customSx={VERTICAL_CENTERING}>
@@ -30,7 +23,7 @@ export default function Sensors() {
                 fontSize: '14px',
                 lineHeight: 1.5,
             }}>
-                Данные с устройства
+                Команды для отправки
             </Typography>
             <Box sx={{display: 'flex', gap: 0.5}}>
                 <Typography sx={{fontSize: '12px', color: 'plat.textDark'}}>
@@ -50,10 +43,14 @@ export default function Sensors() {
                 </Typography>
             </Box>
             <Grid container spacing={2}>
-                {Object.values(defaultSensorsSettings).map((val, index) => {
+                {defaultQuickActionButtonsSettings.map((setting, index) => {
                     return (
                         <Grid size={4} key={index}>
-                            <SensorItem icon={val.icon} value={val.getValue(mqttData)} label={val.label}></SensorItem>
+                            <ActionButton onAction={() => setting.onAction(activeCar!.topic, setting.command(mqttData))}
+                                          icon={setting.icon}
+                                          disabled={!activeCar || !mqttData.pin.length}
+                                          label={setting.label}
+                                          status={setting.status?.(mqttData)}/>
                         </Grid>
                     )
                 })}

@@ -1,5 +1,5 @@
 export const FULL_AVAILABLE_HEIGHT = {
-    height: 'calc(100% - 48px)',
+    height: 'calc(100% - 55px)',
 }
 
 export const VERTICAL_CENTERING = {
