@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
     title: "EngineSTART",
-    manifest: "../../manifest.json",
+    manifest: "/manifest.json",
     appleWebApp: {
         capable: true,
         statusBarStyle: "default",

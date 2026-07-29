@@ -28,7 +28,7 @@ export default function CarImage({ carId }: { carId?: string }) {
 
     return (
         <img
-            src={src ?? '/default-car.svg'}
+            src={src ?? '/icons/default-car.svg'}
             alt="Ваш автомобиль"
             style={{
                 width: '100%',
