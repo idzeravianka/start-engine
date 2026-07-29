@@ -1,13 +1,16 @@
+'use client';
+
 import {CarSwitcher} from "@/src/components/CarSwitcher";
-import {Box, Typography} from "@mui/material";
-import React from "react";
+import {Box} from "@mui/material";
+import React, {useState} from "react";
 import {usePathname} from "next/navigation";
+import MenuIcon from '@mui/icons-material/Menu';
+import {SettingsDrawer} from "@/src/components/SettingsDrawer";
 
 const HEADER_LABEL_CONFIG = {
     '/': <CarSwitcher/>,
-    '/settings': 'Настройки',
-    '/settings/connections': 'Список автомобилей',
-    '/settings/connections/setup-connection': 'Настройки устройства',
+    '/connections': 'Список автомобилей',
+    '/connections/setup-connection': 'Настройки устройства',
     '/sensors': <CarSwitcher/>,
     '/commands': <CarSwitcher/>,
 }
@@ -15,10 +18,11 @@ const HEADER_LABEL_CONFIG = {
 type PathNamesType = keyof typeof HEADER_LABEL_CONFIG;
 
 export default function AppHeader() {
+    const [open, setOpen] = useState(false);
     const pathname: PathNamesType = usePathname() as PathNamesType;
 
     return (
-         <Box
+        <Box
             sx={{
                 pt: 2,
                 pb: 1,
@@ -32,12 +36,8 @@ export default function AppHeader() {
                 fontSize: '16px'
             }}>
             {HEADER_LABEL_CONFIG[pathname]}
-            <Typography sx={{
-                color: 'plat.textDark',
-                fontSize: '16px'
-            }}>
-                Engine<Box component="span" sx={{color: 'plat.brandCobalt', fontWeight: 700}}>START</Box>
-            </Typography>
+            {!pathname.includes('connections') && <MenuIcon sx={{fontSize: '24px'}} onClick={() => setOpen(true)}/>}
+            <SettingsDrawer isOpen={open} onClose={() => setOpen(false)} />
         </Box>
     )
 }

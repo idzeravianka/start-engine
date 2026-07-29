@@ -20,7 +20,7 @@ export default function EditConnection() {
 
     const handleSaveOrUpdate = (val: ConnectionFormDT) => {
         addOrUpdate(val);
-        router.push(`/settings/connections`);
+        router.push(`/`);
     };
 
     return (

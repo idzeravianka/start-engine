@@ -1,7 +1,7 @@
 'use client';
 import PageContainer from "@/src/components/PageContainer";
 import React, {useState} from "react";
-import CarList from "../../../components/CarList";
+import CarList from "../../components/CarList";
 import {useRouter} from "next/navigation";
 import {useSettingsStore} from "@/src/utils/user-settings-store";
 import {ConfirmDialog} from "@/src/components/ConfirmDialog";
@@ -18,8 +18,8 @@ export default function Connections() {
     const cars = useSettingsStore(state => state.settings?.savedEntities ?? EMPTY_ARRAY);
     const removeCarById = useSettingsStore(state => state.removeCarById);
 
-    const handleEditCar = (id: string) => router.push(`/settings/connections/setup-connection?id=${id}`);
-    const handleAddNewCar = () => router.push(`/settings/connections/setup-connection?id=new`);
+    const handleEditCar = (id: string) => router.push(`/connections/setup-connection?id=${id}`);
+    const handleAddNewCar = () => router.push(`/connections/setup-connection?id=new`);
 
     const handleRemoveCarRequest = (id: string) => {
         setCarToDelete(id);
@@ -36,7 +36,7 @@ export default function Connections() {
     return (
         <PageContainer customSx={VERTICAL_CENTERING}>
             <CarList cars={cars} onEdit={handleEditCar} onRemove={handleRemoveCarRequest}
-                     onAddNew={handleAddNewCar}></CarList>
+                     onAddNew={handleAddNewCar} />
             <ConfirmDialog
                 open={deleteDialogOpen}
                 title="Удалить авто?"

@@ -13,9 +13,14 @@ export const CarSwitcher = () => {
     const {settings, setActiveCarId} = useSettingsStore();
     const activeCar = useSettingsStore(state => state.getActiveCar());
 
-    const addNewCar = () => router.push(`/settings/connections/setup-connection?id=new`);
+    const addNewCar = () => router.push(`/connections/setup-connection?id=new`);
 
-    if (!settings || !activeCar) return <Box />;
+    if (!settings || !activeCar) return <Typography sx={{
+        color: 'plat.textDark',
+        fontSize: '16px'
+    }}>
+        Engine<Box component="span" sx={{color: 'plat.brandCobalt', fontWeight: 700}}>START</Box>
+    </Typography>;
 
     return (
         <Box>
@@ -64,7 +69,7 @@ export const CarSwitcher = () => {
                                     overflow: 'hidden',
                                     flexShrink: 0
                                 }}>
-                                    <CarImage carId={car.id}></CarImage>
+                                    <CarImage carId={car.id} />
                                 </Box>
                                 <ListItemText primary={car.name} secondary={car.server}/>
                             </ListItemButton>
@@ -82,7 +87,7 @@ export const CarSwitcher = () => {
                         }}
                         onClick={() => addNewCar()}
                     >
-                        Добавить подключение
+                        Добавить автомобиль
                     </Button>
                 </List>
             </Drawer>

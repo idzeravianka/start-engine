@@ -79,7 +79,7 @@ export default function CarList({cars, onEdit, onRemove, onAddNew}: CarListProps
                 }}
                 onClick={() => onAddNew()}
             >
-                Добавить подключение
+                Добавить автомобиль
             </Button>
         </Box>
     );
