@@ -36,7 +36,7 @@ export default function AppHeader() {
                 fontSize: '16px'
             }}>
             {HEADER_LABEL_CONFIG[pathname]}
-            {!pathname.includes('connections') && <MenuIcon sx={{fontSize: '24px'}} onClick={() => setOpen(true)}/>}
+            {!pathname.includes('connections') && <MenuIcon sx={{fontSize: '28px'}} onClick={() => setOpen(true)}/>}
             <SettingsDrawer isOpen={open} onClose={() => setOpen(false)} />
         </Box>
     )
