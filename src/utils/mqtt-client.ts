@@ -23,12 +23,12 @@ export const getMqttClient = (activeCar: MqttSettings, onMessageCallback: (senso
         return getMqttClient(activeCar, onMessageCallback);
     }
     if (!client) {
-        client = mqtt.connect(`wss://${activeCar.server}1234567`, {
+        client = mqtt.connect(`wss://${activeCar.server}`, {
             ...MQTT_DEFAULT_OPTIONS,
-            // username: activeCar.user,
-            // password: activeCar.pass,
-            // port: +activeCar.port,
-            // clientId: `${activeCar.id}_${activeCar.name}`,
+            username: activeCar.user,
+            password: activeCar.pass,
+            port: +activeCar.port,
+            clientId: `${activeCar.id}_${activeCar.name}`,
         });
 
         client.on('connect', () => {
@@ -45,7 +45,6 @@ export const getMqttClient = (activeCar: MqttSettings, onMessageCallback: (senso
             useSettingsStore.getState().setMqttStatus('connecting');
         });
         client.on('message', (_: string, message: Buffer) => {
-            console.log(JSON.parse(message.toString()) as MqttSensorsDataResponse);
             onMessageCallback(JSON.parse(message.toString()) as MqttSensorsDataResponse);
         });
     }

@@ -9,6 +9,8 @@ import SensorItem from "@/src/components/SensorItem";
 import {VERTICAL_CENTERING} from "@/src/const/common-sx-styles";
 import {sendCommand} from "@/src/utils/mqtt-client";
 import {MqttCommands} from "@/src/types/enums/mqtt-commands";
+import {DashboardItemNames} from "@/src/types/enums/dashboard-item-names";
+import {TimerItem} from "../../components/TimerItem";
 
 export default function Sensors() {
     const mqttData = useSettingsStore((state) => state.mqttData);
@@ -50,10 +52,14 @@ export default function Sensors() {
                 </Typography>
             </Box>
             <Grid container spacing={2}>
-                {Object.values(defaultSensorsSettings).map((val, index) => {
+                {Object.entries(defaultSensorsSettings).map(([key, val], index) => {
+                    const elementToRender = key === DashboardItemNames.Timer ?
+                        <TimerItem sensorsData={mqttData} label={val.label}/> :
+                        <SensorItem icon={val.icon} value={val.getValue(mqttData)} label={val.label}/>;
+
                     return (
                         <Grid size={4} key={index}>
-                            <SensorItem icon={val.icon} value={val.getValue(mqttData)} label={val.label}></SensorItem>
+                            {elementToRender}
                         </Grid>
                     )
                 })}

@@ -1,12 +1,11 @@
 'use client';
 
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Box, Typography, Stack, CircularProgress} from '@mui/material';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import StopIcon from '@mui/icons-material/Stop';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
 import BatteryCharging80Icon from '@mui/icons-material/BatteryCharging80';
-import AvTimerIcon from '@mui/icons-material/AvTimer';
 import ThermostatIcon from '@mui/icons-material/Thermostat';
 import KeyIcon from '@mui/icons-material/Key';
 import {useHaptic} from "@mxerf/tappt/react";
@@ -18,7 +17,7 @@ import SensorItem from "@/src/components/SensorItem";
 import {SPIN_ANIMATION} from "@/src/const/common-sx-styles";
 import {sendCommand} from "@/src/utils/mqtt-client";
 import {MqttCommands} from "@/src/types/enums/mqtt-commands";
-import {TimeStatuses} from "@/src/types/enums/time-statuses";
+import {TimerItem} from "./TimerItem";
 
 export default function RemoteStart({car, sensorsData}: {
     car: MqttSettings | null,
@@ -26,31 +25,8 @@ export default function RemoteStart({car, sensorsData}: {
 }) {
     const [isHolding, setIsHolding] = useState(false);
     const [isStartStopExecuting, setIsStartStopExecuting] = useState<boolean>(false);
-    const [timerData, setTimerData] = useState<number>(0);
     const holdTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const haptic = useHaptic();
-
-    useEffect(() => {
-        const timer = sensorsData.time?.[TimeStatuses.Timer];
-        if (timer !== undefined) {
-            setTimerData(timer);
-        }
-    }, [sensorsData]);
-
-    useEffect(() => {
-        if (timerData <= 0) return;
-
-        const timerId = setTimeout(() => {
-            setTimerData((prevTimer) => prevTimer - 1);
-        }, 1000);
-
-        return () => clearTimeout(timerId);
-    }, [timerData]);
-
-    const engineCountdown = useMemo(() => {
-        if (!timerData || timerData <= 0) return '--.--';
-        return new Date(timerData * 1000).toISOString().substring(14, 19);
-    }, [timerData]);
 
     useEffect(() => {
         setIsStartStopExecuting(() => false);
@@ -151,7 +127,7 @@ export default function RemoteStart({car, sensorsData}: {
                 <Stack spacing={1}>
                     <SensorItem icon={<BatteryCharging80Icon sx={{fontSize: '16px'}}/>}
                                 value={`${sensorsData?.pin?.[PinStatuses.Voltage] || '--'} V`}/>
-                    <SensorItem icon={<AvTimerIcon sx={{fontSize: '16px'}}/>} value={engineCountdown}/>
+                    <TimerItem sensorsData={sensorsData}/>
                 </Stack>
             </Box>
 
