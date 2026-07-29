@@ -23,6 +23,7 @@ const nextConfig: NextConfig = {
         viewTransition: true,
     },
     allowedDevOrigins: ['192.168.0.33'],
+    turbopack: {},
 };
 
 export default withPWA(nextConfig);
