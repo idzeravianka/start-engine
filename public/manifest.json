@@ -1,7 +1,7 @@
 {
   "name": "EngineSTART",
   "short_name": "EngineSTART",
-  "description": "EngineSTART",
+  "description": "Приложение для управления автозапуском двигателя",
   "start_url": "/start-engine",
   "scope": "/start-engine",
   "display": "standalone",

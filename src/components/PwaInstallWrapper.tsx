@@ -27,10 +27,6 @@ export function PwaInstallWrapper() {
             id="pwa-install"
             manifest-url="manifest.json"
             ref={pwaInstallElementRef}
-            // install-description='Установи приложение для управления автозапуском двигателя для комфортного использования!'
-            // name='EngineSTART'
-            // description='Приложение для управления автозапуском двигателя'
-            // icon='icons/favicon.ico'
         />
     )
 }
