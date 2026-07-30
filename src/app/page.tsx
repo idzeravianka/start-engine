@@ -11,6 +11,7 @@ import {MqttCommands} from "@/src/types/enums/mqtt-commands";
 import AddIcon from "@mui/icons-material/Add";
 import {Button} from "@mui/material";
 import {useRouter} from "next/navigation";
+import {PwaInstallWrapper} from "@/src/components/PwaInstallWrapper";
 
 export default function Home() {
     const router = useRouter();
@@ -54,6 +55,7 @@ export default function Home() {
                 <QuickActions car={activeCar} disabled={!activeCar || !mqttData.pin.length}
                               sensorsData={mqttData}/>
             </>}
+            <PwaInstallWrapper />
         </PageContainer>
     );
 }
