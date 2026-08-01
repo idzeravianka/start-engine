@@ -22,11 +22,15 @@ export default function RootComponentsWrapper({children}: Readonly<{ children: R
 
     const resolveRef = useRef<(() => void) | null>(null);
 
-    useEffect(() => {
+    const resolveRefresh = () => {
         if (resolveRef.current) {
             resolveRef.current();
             resolveRef.current = null;
         }
+    };
+
+    useEffect(() => {
+        resolveRefresh()
     }, [mqttData]);
 
     const onSettingsRefresh = (): Promise<void> => {
@@ -35,6 +39,10 @@ export default function RootComponentsWrapper({children}: Readonly<{ children: R
         return new Promise<void>((resolve) => {
             resolveRef.current = resolve;
             sendCommand(`${activeCar.topic}`, MqttCommands.Update);
+
+            setTimeout(() => {
+                resolveRefresh();
+            }, 10000);
         });
     };
 
