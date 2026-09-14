@@ -117,7 +117,7 @@ export default function NewConnectionForm({
                         type={key === 'pass' ? 'password' : 'text'}
                         slotProps={{
                             htmlInput: {
-                                autoComplete: key === 'pass' ? 'current-password' : 'off',
+                                autoComplete: 'off',
                             },
                         }}
                         label={FORM_FIELDS_CONFIG[key].label}
