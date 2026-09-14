@@ -2,7 +2,7 @@
 import React from "react";
 import {Box, Paper, Typography} from "@mui/material";
 
-export default function SensorItem({icon, value, label}: { icon: React.ReactNode, value: string, label?: string }) {
+export default function SensorItem({icon, value, label, onTimerClick}: { icon: React.ReactNode, value: string, label?: string, onTimerClick: () => void }) {
     return (
         <Paper
             elevation={0}
@@ -20,6 +20,7 @@ export default function SensorItem({icon, value, label}: { icon: React.ReactNode
                 width: '100%',
                 height: '100%',
             }}
+            onClick={onTimerClick}
         >
             <Box sx={{color: 'plat.textMuted'}}>{icon}</Box>
             <Typography sx={{fontSize: '12px', fontWeight: 700, color: 'plat.textDark'}}>{value}</Typography>

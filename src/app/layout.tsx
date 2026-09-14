@@ -37,7 +37,7 @@ export default function RootLayout({children}: Readonly<{ children: React.ReactN
         <html
             lang="en"
         >
-        <body>
+        <body className='no-long-press-menu'>
         <RootComponentsWrapper>
             {children}
         </RootComponentsWrapper>

@@ -4,9 +4,15 @@ import AvTimerIcon from "@mui/icons-material/AvTimer";
 import React, {useEffect, useMemo, useState} from "react";
 import {TimeStatuses} from "@/src/types/enums/time-statuses";
 import {MqttSensorsDataResponse} from "@/src/types/interfaces/mqtt-sensors-data-response";
+import {SettingsDrawer} from "@/src/components/TimerDrawer";
+import {useSettingsStore} from "@/src/utils/user-settings-store";
+import {PinStatuses} from "@/src/types/enums/pin-statuses";
 
 export function TimerItem({ label, sensorsData }: { label?: string; sensorsData: MqttSensorsDataResponse }) {
     const [timerData, setTimerData] = useState<number>(0);
+    const [isTimerDrawer, setIsTimerDrawer] = useState(false);
+
+    const mqttData = useSettingsStore((state) => state.mqttData);
 
     useEffect(() => {
         const timer = sensorsData.time?.[TimeStatuses.Timer];
@@ -25,10 +31,19 @@ export function TimerItem({ label, sensorsData }: { label?: string; sensorsData:
         return () => clearTimeout(timerId);
     }, [timerData]);
 
+    const onTimerClick = () => {
+        if (mqttData.pin?.[PinStatuses.K2] !== 1) return;
+
+        setIsTimerDrawer(true);
+    }
+
     const engineCountdown = useMemo(() => {
         if (!timerData || timerData <= 0) return '--.--';
         return new Date(timerData * 1000).toISOString().substring(14, 19);
     }, [timerData]);
 
-    return <SensorItem icon={<AvTimerIcon sx={{fontSize: '16px'}}/>} value={engineCountdown} label={label}/>
+    return <>
+        <SensorItem icon={<AvTimerIcon sx={{fontSize: '16px'}}/>} value={engineCountdown} label={label} onTimerClick={onTimerClick} />
+        <SettingsDrawer isOpen={isTimerDrawer} onClose={() => setIsTimerDrawer(false)}></SettingsDrawer>
+    </>
 }
