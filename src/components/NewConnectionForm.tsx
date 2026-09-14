@@ -115,7 +115,7 @@ export default function NewConnectionForm({
                         id={key}
                         name={key}
                         type={key === 'pass' ? 'password' : 'text'}
-                        autoComplete="off"
+                        autoComplete={key === 'pass' ? 'current-password' : 'off'}
                         label={FORM_FIELDS_CONFIG[key].label}
                         placeholder={FORM_FIELDS_CONFIG[key].placeholder}
                         value={formik.values[key] ?? ''}
