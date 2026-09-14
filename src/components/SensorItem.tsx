@@ -2,7 +2,7 @@
 import React from "react";
 import {Box, Paper, Typography} from "@mui/material";
 
-export default function SensorItem({icon, value, label, onTimerClick}: { icon: React.ReactNode, value: string, label?: string, onTimerClick: () => void }) {
+export default function SensorItem({icon, value, label, onTimerClick}: { icon: React.ReactNode, value: string, label?: string, onTimerClick?: () => void }) {
     return (
         <Paper
             elevation={0}
