@@ -114,12 +114,7 @@ export default function NewConnectionForm({
                         key={key}
                         id={key}
                         name={key}
-                        type={key === 'pass' ? 'password' : 'text'}
-                        slotProps={{
-                            htmlInput: {
-                                autoComplete: 'off',
-                            },
-                        }}
+                        className={key === 'pass' ? 'password_field' : ''}
                         label={FORM_FIELDS_CONFIG[key].label}
                         placeholder={FORM_FIELDS_CONFIG[key].placeholder}
                         value={formik.values[key] ?? ''}

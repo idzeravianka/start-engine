@@ -58,3 +58,8 @@ body {
   user-select: none;
   -webkit-touch-callout: none;
 }
+
+.password_field input {
+  -webkit-text-security: disc;
+  text-security: disc;
+}
