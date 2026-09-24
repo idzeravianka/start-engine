@@ -13,6 +13,8 @@ import {SPIN_ANIMATION} from "@/src/const/common-sx-styles";
 import {sendCommand} from "@/src/utils/mqtt-client";
 import {MqttCommands} from "@/src/types/enums/mqtt-commands";
 import {useEffect, useRef} from "react";
+import {SnackbarProvider, enqueueSnackbar} from 'notistack';
+import {showToast} from "@/src/utils/custom-events";
 
 export default function RootComponentsWrapper({children}: Readonly<{ children: React.ReactNode; }>) {
     const hasHydrated = useSettingsStore((state) => state.hasHydrated);
@@ -33,6 +35,29 @@ export default function RootComponentsWrapper({children}: Readonly<{ children: R
         resolveRefresh()
     }, [mqttData]);
 
+    useEffect(() => {
+        if (!hasHydrated) return;
+
+        const showToastEvent = (event: Event) => {
+            const {message, variant} = (event as CustomEvent).detail;
+
+            enqueueSnackbar(message, { variant });
+        }
+        const handleOnline = () => showToast('Интернет соединение установлено');
+
+        const handleOffline = () => showToast('Интернет соединение потеряно', 'warning');
+
+        window.addEventListener('show_toast', showToastEvent)
+        window.addEventListener('online', handleOnline);
+        window.addEventListener('offline', handleOffline)
+
+        return () => {
+            window.removeEventListener('show_toast', showToastEvent)
+            window.removeEventListener('online', handleOnline);
+            window.removeEventListener('offline', handleOffline)
+        };
+    }, [hasHydrated])
+
     const onSettingsRefresh = (): Promise<void> => {
         if (!activeCar) return Promise.resolve();
 
@@ -49,26 +74,28 @@ export default function RootComponentsWrapper({children}: Readonly<{ children: R
     return (
         hasHydrated && <AppRouterCacheProvider options={{enableCssLayer: true}}>
             <ThemeProvider theme={theme}>
-                <Box sx={{overflowY: 'auto', height: 'calc(100dvh - 84px)'}}>
-                    <MqttProvider>
-                        <AppHeader/>
-                        <PullToRefresh onRefresh={onSettingsRefresh}
-                                       isPullable={!!(isConnected && mqttData.pin.length)}
-                                       refreshingContent={<RefreshingContent/>}
-                                       pullingContent={<PullingContent/>}
-                                       className='pull-to-refresh'>{children}</PullToRefresh>
-                    </MqttProvider>
-                </Box>
-                <Box sx={{height: '84px'}}></Box>
-                <Box sx={{
-                    position: 'fixed',
-                    width: '100%',
-                    maxWidth: '500px',
-                    backgroundColor: 'transparent',
-                    bottom: 0
-                }}>
-                    <BottomAppNavigation/>
-                </Box>
+                <SnackbarProvider maxSnack={1} anchorOrigin={{horizontal: 'center', vertical: 'top'}} autoHideDuration={1750}>
+                    <Box sx={{overflowY: 'auto', height: 'calc(100dvh - 84px)'}}>
+                        <MqttProvider>
+                            <AppHeader/>
+                            <PullToRefresh onRefresh={onSettingsRefresh}
+                                           isPullable={!!(isConnected && mqttData.pin.length)}
+                                           refreshingContent={<RefreshingContent/>}
+                                           pullingContent={<PullingContent/>}
+                                           className='pull-to-refresh'>{children}</PullToRefresh>
+                        </MqttProvider>
+                    </Box>
+                    <Box sx={{height: '84px'}}></Box>
+                    <Box sx={{
+                        position: 'fixed',
+                        width: '100%',
+                        maxWidth: '500px',
+                        backgroundColor: 'transparent',
+                        bottom: 0
+                    }}>
+                        <BottomAppNavigation/>
+                    </Box>
+                </SnackbarProvider>
             </ThemeProvider>
         </AppRouterCacheProvider>
     )

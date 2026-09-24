@@ -4,6 +4,7 @@ import {MqttSettings} from "@/src/types/interfaces/mqtt-settings";
 import {useSettingsStore} from "@/src/utils/user-settings-store";
 import {MqttSensorsDataResponse} from "@/src/types/interfaces/mqtt-sensors-data-response";
 import {MqttCommands} from "@/src/types/enums/mqtt-commands";
+import {showToast} from "@/src/utils/custom-events";
 
 const MQTT_DEFAULT_OPTIONS: IClientOptions = {
     encoding: 'utf8',
@@ -35,17 +36,19 @@ export const getMqttClient = (activeCar: MqttSettings, onMessageCallback: (senso
             useSettingsStore.getState().setMqttStatus('connected');
             client!.subscribe(`${activeCar.topic}/pub`, {qos: 0});
             sendCommand(`${activeCar.topic}`, MqttCommands.Update);
+            showToast('Соединение с брокером установлено');
         });
-
         client.on('offline', () => {
             useSettingsStore.getState().setMqttStatus('disconnected');
         });
-
         client.on('reconnect', () => {
             useSettingsStore.getState().setMqttStatus('connecting');
         });
         client.on('message', (_: string, message: Buffer) => {
             onMessageCallback(JSON.parse(message.toString()) as MqttSensorsDataResponse);
+        });
+        client.on('error', (error) => {
+            showToast(error.message, 'error');
         });
     }
 
