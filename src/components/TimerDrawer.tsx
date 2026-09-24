@@ -4,7 +4,7 @@ import React from "react";
 import {useSettingsStore} from "@/src/utils/user-settings-store";
 import {sendCommand} from "@/src/utils/mqtt-client";
 
-export function SettingsDrawer({isOpen, onClose}: { isOpen: boolean, onClose: () => void }) {
+export function TimerDrawer({isOpen, onClose}: { isOpen: boolean, onClose: () => void }) {
     const [newTimerValue, setNewTimerValue] = React.useState<number>(10);
 
     const activeCar = useSettingsStore((state) => state.getActiveCar());

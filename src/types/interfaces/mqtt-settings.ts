@@ -11,6 +11,7 @@ export interface MqttSettings {
   name?: string;
   server: string;
   port: string;
+  tcpPort?: string;
   user: string;
   pass: string;
   topic: string;

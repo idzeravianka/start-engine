@@ -15,12 +15,16 @@ import {MqttCommands} from "@/src/types/enums/mqtt-commands";
 import {useEffect, useRef} from "react";
 import {SnackbarProvider, enqueueSnackbar} from 'notistack';
 import {showToast} from "@/src/utils/custom-events";
+import {MqttSettings} from "@/src/types/interfaces/mqtt-settings";
+import {generateId} from "@/src/utils/generate-id";
 
 export default function RootComponentsWrapper({children}: Readonly<{ children: React.ReactNode; }>) {
     const hasHydrated = useSettingsStore((state) => state.hasHydrated);
     const activeCar = useSettingsStore((state) => state.getActiveCar());
     const isConnected = useSettingsStore(state => state.mqttStatus === 'connected');
     const mqttData = useSettingsStore((state) => state.mqttData);
+    const addOrUpdateConnection = useSettingsStore(state => state.addOrUpdateConnection);
+
 
     const resolveRef = useRef<(() => void) | null>(null);
 
@@ -41,7 +45,7 @@ export default function RootComponentsWrapper({children}: Readonly<{ children: R
         const showToastEvent = (event: Event) => {
             const {message, variant} = (event as CustomEvent).detail;
 
-            enqueueSnackbar(message, { variant });
+            enqueueSnackbar(message, {variant});
         }
         const handleOnline = () => showToast('Интернет соединение установлено');
 
@@ -56,7 +60,18 @@ export default function RootComponentsWrapper({children}: Readonly<{ children: R
             window.removeEventListener('online', handleOnline);
             window.removeEventListener('offline', handleOffline)
         };
-    }, [hasHydrated])
+    }, [hasHydrated]);
+
+    useEffect(() => {
+        const deprecated = localStorage.getItem('mqtt_settings');
+        if (deprecated) {
+            const entityId = generateId();
+            const settings = JSON.parse(deprecated) as MqttSettings;
+
+            addOrUpdateConnection({ ...settings, id: entityId, name: 'Car #1' })
+            localStorage.removeItem('mqtt_settings');
+        }
+    }, [hasHydrated]);
 
     const onSettingsRefresh = (): Promise<void> => {
         if (!activeCar) return Promise.resolve();
@@ -74,7 +89,8 @@ export default function RootComponentsWrapper({children}: Readonly<{ children: R
     return (
         hasHydrated && <AppRouterCacheProvider options={{enableCssLayer: true}}>
             <ThemeProvider theme={theme}>
-                <SnackbarProvider maxSnack={1} anchorOrigin={{horizontal: 'center', vertical: 'top'}} autoHideDuration={1750}>
+                <SnackbarProvider maxSnack={1} anchorOrigin={{horizontal: 'center', vertical: 'top'}}
+                                  autoHideDuration={1750}>
                     <Box sx={{overflowY: 'auto', height: 'calc(100dvh - 84px)'}}>
                         <MqttProvider>
                             <AppHeader/>

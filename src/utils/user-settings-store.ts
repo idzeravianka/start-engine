@@ -24,6 +24,7 @@ interface SettingsState {
     mqttDataUpdateTime: string | null;
     mqttStatus: 'connected' | 'disconnected' | 'connecting';
     setSettings: (settings: UserSettings) => void;
+    getCarById: (carId: string) => MqttSettings;
     removeCarById: (carId: string) => void;
     addOrUpdateConnection: (settings: MqttSettings) => void;
     getActiveCar: () => MqttSettings | null;
@@ -32,17 +33,6 @@ interface SettingsState {
     setMqttData: (data: MqttSensorsDataResponse) => void;
     setMqttStatus: (status: 'connected' | 'disconnected' | 'connecting') => void;
 }
-
-// function updateDeprecatedSettings(deprecatedSettings: string): void {
-//     const entityId = generateId();
-//     const settings = JSON.parse(deprecatedSettings) as MqttSettings;
-//
-//     setSettings({
-//         selectedEntityId: entityId,
-//         savedEntities: [{...settings, id: entityId, name: 'Car #1'}],
-//     });
-//     localStorage.removeItem('mqtt_seting');
-// }
 
 export const carIconService = {
     async upload(carId: string, file: File) {
@@ -68,6 +58,10 @@ export const useSettingsStore = create<SettingsState>()(
             mqttDataUpdateTime: null,
             mqttStatus: 'disconnected',
             setSettings: (settings: UserSettings) => set({settings}),
+            getCarById: (carId: string) => {
+                const {settings} = get();
+                return settings.savedEntities.find(car => car.id === carId)!;
+            },
             removeCarById: async (carId: string) => {
                 await carIconService.remove(carId);
 

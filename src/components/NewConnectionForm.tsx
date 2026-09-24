@@ -23,8 +23,12 @@ const FORM_FIELDS_CONFIG: Record<keyof NewConnectionFormDT, { label: string, pla
         placeholder: 'srv2.clusterfly.ru',
     },
     port: {
-        label: 'Порт (MQTT port):',
+        label: 'WWS порт:',
         placeholder: '9994',
+    },
+    tcpPort: {
+        label: 'TCP порт:',
+        placeholder: '9991',
     },
     user: {
         label: 'Логин (MQTT user):',
@@ -51,6 +55,8 @@ const validationSchema: ObjectSchema<NewConnectionFormDT> = Yup.object({
     port: Yup.string()
         .required('Поле обязательно для заполнения')
         .matches(/^\d+$/, 'Порт должен состоять только из цифр'),
+    tcpPort: Yup.string()
+        .matches(/^\d+$/, 'Порт должен состоять только из цифр'),
     user: Yup.string().required('Поле обязательно для заполнения'),
     pass: Yup.string().required('Поле обязательно для заполнения'),
     topic: Yup.string().required('Поле обязательно для заполнения'),
@@ -66,6 +72,7 @@ export default function NewConnectionForm({
             name: initialData?.name || '',
             server: initialData?.server || '',
             port: initialData?.port || '',
+            tcpPort: initialData?.tcpPort || '',
             user: initialData?.user || '',
             pass: initialData?.pass || '',
             topic: initialData?.topic || '',
@@ -95,7 +102,7 @@ export default function NewConnectionForm({
 
     return (
         <Box component="form" onSubmit={formik.handleSubmit} noValidate autoComplete="off"
-             sx={{backgroundColor: 'plat.bg'}}>
+             sx={{backgroundColor: 'plat.bg', pt: 1}}>
             {(Object.keys(FORM_FIELDS_CONFIG) as Array<keyof NewConnectionFormDT>).map((key) => {
                 const isTouched = Boolean(formik.touched[key]);
                 const hasError = Boolean(formik.errors[key]);

@@ -1,22 +1,24 @@
 'use client';
 
 import {Box, Typography, Button, IconButton, Paper, Stack} from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditNoteIcon from '@mui/icons-material/EditNote';
 import AddIcon from '@mui/icons-material/Add';
-import React from "react";
+import React, {useState} from "react";
 import {MqttSettings} from "@/src/types/interfaces/mqtt-settings";
 import CarImage from "@/src/components/CarImage";
+import SettingsIcon from '@mui/icons-material/Settings';
 import {POINT_CUTTING} from "@/src/const/common-sx-styles";
+import {CarSettingsDrawer} from "@/src/components/CarSettingsDrawer";
 
 interface CarListProps {
     cars: MqttSettings[];
+    onSendSettingsToController: (carSettings: MqttSettings) => void;
     onEdit: (id: string) => void;
     onRemove: (id: string) => void;
     onAddNew: () => void;
 }
 
-export default function CarList({cars, onEdit, onRemove, onAddNew}: CarListProps) {
+export default function CarList({cars, onEdit, onRemove, onAddNew, onSendSettingsToController}: CarListProps) {
+    const [selectedCarId, setSelectedCarId] = useState<string | null>(null);
     return (
         <Box sx={{bgcolor: 'plat.bg'}}>
             <Stack spacing={2} sx={{maxHeight: 'calc(100dvh - 205px)', overflowY: 'auto'}}>
@@ -34,7 +36,14 @@ export default function CarList({cars, onEdit, onRemove, onAddNew}: CarListProps
                             bgcolor: 'white'
                         }}
                     >
-                        <Box sx={{width: 50, height: 50, borderRadius: '16px', overflow: 'hidden', bgcolor: '#ECEFF1', flexShrink: 0}}>
+                        <Box sx={{
+                            width: 50,
+                            height: 50,
+                            borderRadius: '16px',
+                            overflow: 'hidden',
+                            bgcolor: '#ECEFF1',
+                            flexShrink: 0
+                        }}>
                             <CarImage carId={car.id}></CarImage>
                         </Box>
 
@@ -54,14 +63,11 @@ export default function CarList({cars, onEdit, onRemove, onAddNew}: CarListProps
                         </Box>
 
                         <IconButton
-                            onClick={() => onEdit(car.id)}
+                            onClick={() => {
+                                setSelectedCarId(car.id)
+                            }}
                             sx={{color: 'brandCobalt', flexShrink: 0}}>
-                            <EditNoteIcon fontSize="small"/>
-                        </IconButton>
-                        <IconButton
-                            onClick={() => onRemove(car.id)}
-                            sx={{color: 'brandCopper', flexShrink: 0}}>
-                            <DeleteIcon fontSize="small"/>
+                            <SettingsIcon fontSize="small"/>
                         </IconButton>
                     </Paper>
                 ))}
@@ -77,10 +83,14 @@ export default function CarList({cars, onEdit, onRemove, onAddNew}: CarListProps
                     borderRadius: 3,
                     textTransform: 'none',
                 }}
-                onClick={() => onAddNew()}
+                onClick={onAddNew}
             >
                 Добавить автомобиль
             </Button>
+            {!!selectedCarId &&
+                <CarSettingsDrawer carId={selectedCarId} onClose={() => setSelectedCarId(null)} onEdit={onEdit}
+                                   onRemove={onRemove} onSendSettings={onSendSettingsToController}></CarSettingsDrawer>
+            }
         </Box>
     );
 };

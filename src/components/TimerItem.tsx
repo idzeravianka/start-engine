@@ -4,7 +4,7 @@ import AvTimerIcon from "@mui/icons-material/AvTimer";
 import React, {useEffect, useMemo, useState} from "react";
 import {TimeStatuses} from "@/src/types/enums/time-statuses";
 import {MqttSensorsDataResponse} from "@/src/types/interfaces/mqtt-sensors-data-response";
-import {SettingsDrawer} from "@/src/components/TimerDrawer";
+import {TimerDrawer} from "@/src/components/TimerDrawer";
 import {useSettingsStore} from "@/src/utils/user-settings-store";
 import {PinStatuses} from "@/src/types/enums/pin-statuses";
 
@@ -44,6 +44,6 @@ export function TimerItem({ label, sensorsData }: { label?: string; sensorsData:
 
     return <>
         <SensorItem icon={<AvTimerIcon sx={{fontSize: '16px'}}/>} value={engineCountdown} label={label} onTimerClick={onTimerClick} />
-        <SettingsDrawer isOpen={isTimerDrawer} onClose={() => setIsTimerDrawer(false)}></SettingsDrawer>
+        <TimerDrawer isOpen={isTimerDrawer} onClose={() => setIsTimerDrawer(false)} />
     </>
 }

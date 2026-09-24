@@ -18,6 +18,9 @@ export default function Connections() {
     const cars = useSettingsStore(state => state.settings?.savedEntities ?? EMPTY_ARRAY);
     const removeCarById = useSettingsStore(state => state.removeCarById);
 
+    const handleSendSettingsToController = (carSettings: MqttSettings) => {
+        window.open(`http://192.168.4.1/save?mqtt_serv=${carSettings.server}&mqtt_port=${carSettings.tcpPort}&mqtt_login=${carSettings.user}&mqtt_pass=${carSettings.pass}&mqtt=1&prefix=${carSettings.topic}`, '_blank');
+    }
     const handleEditCar = (id: string) => router.push(`/connections/setup-connection?id=${id}`);
     const handleAddNewCar = () => router.push(`/connections/setup-connection?id=new`);
 
@@ -35,8 +38,9 @@ export default function Connections() {
 
     return (
         <PageContainer customSx={VERTICAL_CENTERING}>
-            <CarList cars={cars} onEdit={handleEditCar} onRemove={handleRemoveCarRequest}
-                     onAddNew={handleAddNewCar} />
+            <CarList cars={cars} onSendSettingsToController={handleSendSettingsToController} onEdit={handleEditCar}
+                     onRemove={handleRemoveCarRequest}
+                     onAddNew={handleAddNewCar}/>
             <ConfirmDialog
                 open={deleteDialogOpen}
                 title="Удалить авто?"
