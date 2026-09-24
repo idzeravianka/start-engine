@@ -77,6 +77,7 @@ export default function RootComponentsWrapper({children}: Readonly<{ children: R
                 <SnackbarProvider maxSnack={1} anchorOrigin={{horizontal: 'center', vertical: 'top'}} autoHideDuration={1750}>
                     <Box sx={{overflowY: 'auto', height: 'calc(100dvh - 84px)'}}>
                         <MqttProvider>
+                            <Box sx={{ height: '1px' }}/>
                             <AppHeader/>
                             <PullToRefresh onRefresh={onSettingsRefresh}
                                            isPullable={!!(isConnected && mqttData.pin.length)}
