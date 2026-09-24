@@ -24,7 +24,7 @@ export default function AppHeader() {
     return (
         <Box
             sx={{
-                pt: 2,
+                pt: 2.5,
                 pb: 1,
                 px: 2,
                 fontWeight: 700,
